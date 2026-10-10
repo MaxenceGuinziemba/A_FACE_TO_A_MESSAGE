@@ -1,0 +1,48 @@
+{
+  "sentiment_distribution": {
+    "positive": 5611,
+    "neutral": 1595,
+    "negative": 1501
+  },
+  "dominant_emotions": {
+    "neutral": 3535,
+    "disgust": 2302,
+    "anger": 1146,
+    "joy": 868,
+    "fear": 575,
+    "sadness": 255,
+    "surprise": 26
+  },
+  "dominant_dimensions": {
+    "solidarite": 4503,
+    "chaleur": 2225,
+    "empathie": 814,
+    "urgence": 447,
+    "espoir": 372,
+    "tristesse": 150,
+    "determination": 122,
+    "indignation": 74
+  },
+  "mean_voice_params": {
+    "pitch": 0.03127670938830434,
+    "speed": 2.090319981821072,
+    "energy": 1.1047175609546978,
+    "warmth": 1.2279010471560097
+  },
+  "mean_face_params": {
+    "eyebrows": 0.125515884242212,
+    "mouth": 0.15602032560353699,
+    "eyes": 1.2053301655956106,
+    "gaze": 1.2862841244362413
+  },
+  "mean_dimensions": {
+    "solidarite": 0.07625583137814676,
+    "empathie": 0.06950100357129185,
+    "urgence": 0.04471880862141572,
+    "chaleur": 0.16250334979518397,
+    "tristesse": 0.027307530339573522,
+    "espoir": 0.0529223886637462,
+    "determination": 0.026740936411316567,
+    "indignation": 0.01715477967918533
+  }
+}

@@ -1,0 +1,301 @@
+{
+  "voice_map": {
+    "solidarite": {
+      "pitch": 0.1,
+      "speed": 1.05,
+      "energy": 0.7,
+      "warmth": 0.7
+    },
+    "empathie": {
+      "pitch": -0.1,
+      "speed": 0.85,
+      "energy": 0.4,
+      "warmth": 0.9
+    },
+    "urgence": {
+      "pitch": 0.3,
+      "speed": 1.2,
+      "energy": 0.85,
+      "warmth": 0.3
+    },
+    "chaleur": {
+      "pitch": 0.0,
+      "speed": 0.9,
+      "energy": 0.5,
+      "warmth": 1.0
+    },
+    "tristesse": {
+      "pitch": -0.3,
+      "speed": 0.75,
+      "energy": 0.3,
+      "warmth": 0.6
+    },
+    "espoir": {
+      "pitch": 0.2,
+      "speed": 1.0,
+      "energy": 0.6,
+      "warmth": 0.8
+    },
+    "determination": {
+      "pitch": 0.0,
+      "speed": 0.95,
+      "energy": 0.7,
+      "warmth": 0.5
+    },
+    "indignation": {
+      "pitch": 0.4,
+      "speed": 1.15,
+      "energy": 0.9,
+      "warmth": 0.2
+    }
+  },
+  "face_map": {
+    "solidarite": {
+      "eyebrows": 0.3,
+      "mouth": 0.3,
+      "eyes": 0.8,
+      "gaze": 1.0
+    },
+    "empathie": {
+      "eyebrows": 0.1,
+      "mouth": 0.0,
+      "eyes": 0.6,
+      "gaze": 0.8
+    },
+    "urgence": {
+      "eyebrows": 0.6,
+      "mouth": -0.2,
+      "eyes": 1.0,
+      "gaze": 1.0
+    },
+    "chaleur": {
+      "eyebrows": 0.2,
+      "mouth": 0.6,
+      "eyes": 0.7,
+      "gaze": 0.9
+    },
+    "tristesse": {
+      "eyebrows": -0.3,
+      "mouth": -0.5,
+      "eyes": 0.3,
+      "gaze": 0.3
+    },
+    "espoir": {
+      "eyebrows": 0.4,
+      "mouth": 0.4,
+      "eyes": 0.9,
+      "gaze": 0.7
+    },
+    "determination": {
+      "eyebrows": -0.1,
+      "mouth": 0.0,
+      "eyes": 0.7,
+      "gaze": 1.0
+    },
+    "indignation": {
+      "eyebrows": -0.5,
+      "mouth": -0.3,
+      "eyes": 0.9,
+      "gaze": 1.0
+    }
+  },
+  "emotion_dimensions": [
+    "solidarite",
+    "empathie",
+    "urgence",
+    "chaleur",
+    "tristesse",
+    "espoir",
+    "determination",
+    "indignation"
+  ],
+  "lexicon": {
+    "solidarite": [
+      "solidarité",
+      "solidaire",
+      "citoyen",
+      "citoyenne",
+      "ensemble",
+      "collectif",
+      "communauté",
+      "responsabilité",
+      "devoir",
+      "contribuer",
+      "engagement",
+      "engagé",
+      "engagée",
+      "mobiliser",
+      "agir",
+      "action",
+      "faire quelque chose",
+      "concrètement",
+      "participer",
+      "bras ballants",
+      "rester sans rien faire"
+    ],
+    "empathie": [
+      "comprendre",
+      "comprends",
+      "touché",
+      "touchée",
+      "ému",
+      "émue",
+      "sensible",
+      "compassion",
+      "souffrance",
+      "douleur",
+      "difficile",
+      "épreuve",
+      "parcours",
+      "imagine",
+      "imaginer",
+      "place",
+      "à leur place",
+      "humain",
+      "humanité",
+      "dignité",
+      "humaniste",
+      "prochain"
+    ],
+    "urgence": [
+      "choqué",
+      "choquée",
+      "choc",
+      "urgence",
+      "urgent",
+      "insupportable",
+      "inacceptable",
+      "inadmissible",
+      "catastrophe",
+      "crise",
+      "détresse",
+      "immédiatement",
+      "maintenant",
+      "vite",
+      "ne plus attendre",
+      "assez",
+      "trop",
+      "images",
+      "médias",
+      "télévision",
+      "actualité"
+    ],
+    "chaleur": [
+      "accueil",
+      "accueillir",
+      "maison",
+      "chez nous",
+      "chez moi",
+      "foyer",
+      "chambre",
+      "partage",
+      "partager",
+      "repas",
+      "ensemble",
+      "famille",
+      "amitié",
+      "convivialité",
+      "ouvert",
+      "ouverte",
+      "bienvenue",
+      "chaleureux",
+      "chaleureuse",
+      "bienveillance",
+      "tendresse"
+    ],
+    "tristesse": [
+      "triste",
+      "tristesse",
+      "pleure",
+      "pleurer",
+      "larmes",
+      "désolé",
+      "désolée",
+      "malheureux",
+      "malheureuse",
+      "terrible",
+      "drame",
+      "tragédie",
+      "tragique",
+      "mort",
+      "mourir",
+      "noyade",
+      "noyé",
+      "aylan",
+      "guerre",
+      "bombe",
+      "destruction",
+      "perdu",
+      "perdue",
+      "déraciné"
+    ],
+    "espoir": [
+      "espoir",
+      "espérer",
+      "espère",
+      "avenir",
+      "futur",
+      "possible",
+      "possible",
+      "mieux",
+      "meilleur",
+      "chance",
+      "opportunité",
+      "reconstruire",
+      "reconstruction",
+      "nouveau départ",
+      "recommencer",
+      "rêve",
+      "rêver",
+      "croire",
+      "confiance",
+      "optimiste",
+      "positif",
+      "positive"
+    ],
+    "determination": [
+      "décidé",
+      "décidée",
+      "décision",
+      "prêt",
+      "prête",
+      "prêts",
+      "volonté",
+      "résolu",
+      "résolution",
+      "fermement",
+      "convaincu",
+      "convaincue",
+      "évident",
+      "naturel",
+      "logique",
+      "normal",
+      "bien sûr",
+      "évidemment",
+      "sans hésiter",
+      "absolument",
+      "totalement"
+    ],
+    "indignation": [
+      "révolte",
+      "révolté",
+      "révoltée",
+      "scandale",
+      "scandaleux",
+      "honte",
+      "honteux",
+      "intolérable",
+      "injuste",
+      "injustice",
+      "colère",
+      "furieux",
+      "furieuse",
+      "indigné",
+      "indignée",
+      "politique",
+      "gouvernement",
+      "laisser faire",
+      "abandon"
+    ]
+  }
+}
