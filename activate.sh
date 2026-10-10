@@ -1,0 +1,14 @@
+#!/bin/bash
+# Activation script for A FACE TO A MESSAGE virtual environment
+
+echo "🐍 Activating virtual environment..."
+source .venv/bin/activate
+
+echo "✓ Virtual environment activated"
+echo ""
+echo "Python version: $(python --version)"
+echo "Pip version: $(pip --version | cut -d' ' -f1-2)"
+echo ""
+echo "To deactivate, run: deactivate"
+echo "To run Jupyter: jupyter notebook"
+echo ""
