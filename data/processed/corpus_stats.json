@@ -1,0 +1,11 @@
+{
+  "total_messages": 8707,
+  "with_testimony": 8707,
+  "with_description": 8707,
+  "avg_testimony_length": 173.63133111289767,
+  "sources": {
+    "F2": 6801,
+    "F1": 1460,
+    "NP": 446
+  }
+}
