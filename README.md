@@ -1,156 +1,170 @@
 # A FACE TO A MESSAGE
 
-> Donner un visage aux messages - Physicaliser des témoignages textuels avec l'IA
+> Donner un visage aux messages - Give a face to messages
 
 ![Project Type](https://img.shields.io/badge/Project-Research--Creation-blue)
 ![Institution](https://img.shields.io/badge/Institution-Télécom%20Paris-red)
-![Status](https://img.shields.io/badge/Status-In%20Development-yellow)
 
-## 📖 Overview
-
-We have ~20,000 anonymous messages about hosting refugees from Singa's *Comme à la maison* platform (now *J'accueille*). This project uses AI to analyze each message's emotions and language, then gives it a synthetic voice and an animated avatar, transforming written testimonies into expressive presences that can interact with visitors at the Musée national de l'histoire de l'immigration.
-
-**The goal**: Transform text into embodied, emotional, interactive presence.
+**Transforming ~20,000 refugee hosting messages into interactive, emotional avatars using AI.**
 
 ```
 TEXT → EMOTION ANALYSIS → VOICE → ANIMATED FACE → VISITOR INTERACTION
 ```
 
-## 🎯 Quick Links
+---
 
-- **[📋 Project Overview](PROJECT_OVERVIEW.md)** - Complete project documentation
-- **[📊 Data Overview](DATA_OVERVIEW.md)** - Dataset structure and analysis
-- **[🎓 Academic Context](#academic-context)** - Course and supervision info
+## 🚀 Quick Start
+
+### 1. Setup Environment
+
+```bash
+# Activate virtual environment
+source activate.sh
+
+# Launch Jupyter
+jupyter notebook
+```
+
+### 2. Process Data
+
+Open and run: `notebooks/02_data_cleaning.ipynb`
+- Kernel: **Python (A Face to a Message)**
+- Unifies 9,000+ messages from 3 Excel sheets
+- Creates standardized dataset
+
+### 3. Explore Messages
+
+Open: `notebooks/03_random_message_viewer.ipynb`
+- Interactive message browser
+- Filter by quality, region, duration
+- Export samples for testing
+
+---
+
+## 📖 Documentation
+
+| File | Description |
+|------|-------------|
+| **[docs/PROJECT.md](docs/PROJECT.md)** | Complete project context, objectives, and data structure |
+| **[docs/SETUP.md](docs/SETUP.md)** | Full installation guide (Python, packages, Jupyter) |
+| **[docs/DATA_PIPELINE.md](docs/DATA_PIPELINE.md)** | Data management and processing strategy |
+| **[notebooks/README.md](notebooks/README.md)** | Notebook index and workflow |
+
+---
+
+## 🎯 Project Overview
+
+**Context**: ~20,000 anonymous messages from Singa's "Comme à la maison" platform about hosting refugees.
+
+**Goal**: Transform text into embodied, emotional, interactive presence for the Musée national de l'histoire de l'immigration.
+
+**Technical Pipeline**:
+1. **Emotion Analysis** - Extract emotional profiles from French text
+2. **Voice Synthesis** - Generate speech with emotional prosody  
+3. **Avatar Animation** - Animated faces with synchronized expressions
+4. **Visitor Interaction** - Detect presence and trigger responses
+
+**Installation**: Wall of faces (4m × 1.15m touchscreen) - avatars react to visitors
+
+---
+
+## 📊 Dataset
+
+- **~9,000 messages** in current dataset (path to 20,000)
+- **3 sources**: Familles 1, Familles 2, Nouvelle Plateforme
+- **Content**: Motivations, personal descriptions, hosting details
+- **Language**: Primarily French
+
+**Key fields**: Motivation text, location, age, space type, hosting duration, children acceptance
+
+See [docs/PROJECT.md](docs/PROJECT.md) for detailed data structure.
+
+---
 
 ## 🏗️ Project Structure
 
 ```
 A_FACE_TO_A_MESSAGE/
 ├── data/
-│   ├── raw/              # Original Excel files with messages
-│   └── processed/        # Cleaned and processed datasets
+│   ├── raw/              # Original Excel (gitignored)
+│   └── processed/        # Cleaned datasets
 ├── src/
-│   ├── analysis/         # NLP & emotion analysis modules
-│   ├── tts/             # Text-to-Speech integration
-│   ├── avatar/          # Avatar animation & rendering
-│   └── interaction/     # Visitor detection & tracking
-├── notebooks/           # Jupyter notebooks for experimentation
-├── models/              # Trained models & configurations
-├── config/              # Configuration files
-├── tests/               # Unit tests
-└── docs/                # Additional documentation
+│   ├── analysis/         # NLP & emotion detection
+│   ├── tts/             # Text-to-speech
+│   ├── avatar/          # Avatar animation
+│   └── interaction/     # Visitor tracking
+├── notebooks/           # Jupyter notebooks
+│   ├── 01_data_exploration.ipynb
+│   ├── 02_data_cleaning.ipynb      ⭐ Start here
+│   └── 03_random_message_viewer.ipynb
+├── docs/                # Documentation
+├── .venv/               # Virtual environment (gitignored)
+└── requirements.txt     # Python dependencies
 ```
 
-## 🚀 Getting Started
+---
 
-### Prerequisites
-- Python 3.9+
-- [Additional requirements TBD]
+## 🛠️ Technologies
 
-### Installation
+- **Python 3.11** - Core language
+- **NLP**: transformers, spacy, nltk (French models)
+- **Data**: pandas, numpy
+- **Visualization**: matplotlib, seaborn, plotly
+- **Jupyter**: Interactive notebooks
+- **Computer Vision**: OpenCV (visitor tracking)
 
-```bash
-# Clone the repository
-git clone git@github.com:MaxenceGuinziemba/A_FACE_TO_A_MESSAGE.git
-cd A_FACE_TO_A_MESSAGE
+**Next phases**: TTS engines, 3D avatars (Unity/Blender), real-time systems
 
-# Install dependencies (to be created)
-pip install -r requirements.txt
-```
+---
 
-## 🔬 Technical Pipeline
+## 📅 Academic Context
 
-### 1. **Emotion Analysis** (`src/analysis/`)
-- Analyze text messages for emotional content
-- Extract temporal emotional profiles
-- Classify sentiment and emotions
-
-### 2. **Voice Synthesis** (`src/tts/`)
-- Text-to-Speech conversion
-- Prosody modification based on emotions
-- Multi-language support
-
-### 3. **Avatar Animation** (`src/avatar/`)
-- Parametric facial expressions
-- Lip-sync with audio
-- Real-time animation
-
-### 4. **Visitor Interaction** (`src/interaction/`)
-- Presence detection (camera, touchscreen)
-- Gaze tracking
-- Interaction triggers
-
-## 📊 Dataset
-
-- **~20,000 messages** from refugee hosting platform
-- **Time period**: 2015 - present
-- **Languages**: Primarily French, some English
-- **Content**: Personal motivations, descriptions, hosting offers
-
-See [DATA_OVERVIEW.md](DATA_OVERVIEW.md) for detailed information.
-
-## 🎓 Academic Context
-
-**Institution**: Télécom Paris  
-**Program**: Alternant IA/SD  
-**Year**: 2026-2027 (S1)  
+**Student**: Maxence GUINZIEMBA-PROKOP  
+**Institution**: Télécom Paris (Alternant IA/SD)  
+**Year**: 2026-2027 (Semester 1)  
 **Project Type**: Projet recherche-création
 
-### Supervisors
+**Supervisors**:
 - Dana Diminescu - dana.diminescu@telecom-paris.fr
 - Mickael Bouhier - mickael.bouhier@telecom-paris.fr
 
-### Collaborators
-- HI Paris!
-- Quentin Lobbé - CNRS
-- Musée national de l'histoire de l'immigration
+**Collaboration**: HI Paris!, CNRS, Musée de l'immigration
 
-## 🎨 Installation Concept
+---
 
-The final installation will feature a **wall of faces** - multiple animated avatars displayed on a large screen (4m × 1.15m touchscreen at Télécom Paris).
+## 🎯 Current Status
 
-- Visitors approach the wall
-- Avatars detect presence and make eye contact
-- Visitors select an avatar (touch or proximity)
-- Avatar speaks its message with emotional voice and expressions
-- Interactive, embodied testimony experience
+- [x] Repository setup and documentation
+- [x] Virtual environment configured
+- [x] Data exploration complete
+- [x] Data cleaning pipeline ready
+- [x] Interactive message viewer ready
+- [ ] Emotion analysis (in progress)
+- [ ] Voice synthesis integration
+- [ ] Avatar system design
+- [ ] Visitor interaction prototype
 
-## 🛠️ Technologies (Planned)
-
-- **Python** - Core orchestration
-- **NLP/LLM** - Emotion & linguistic analysis
-- **Text-to-Speech** - Voice generation
-- **Computer Vision** - Visitor tracking (OpenCV)
-- **3D/Animation** - Avatar rendering (Unity/Unreal/Blender/Web)
-- **Real-time Systems** - Module communication
-
-## 📈 Development Roadmap
-
-- [x] Project setup and documentation
-- [ ] Data loading and exploration
-- [ ] Emotion analysis pipeline
-- [ ] TTS integration
-- [ ] Avatar design and animation
-- [ ] Interaction system
-- [ ] Integration and testing
-- [ ] Final installation demo
+---
 
 ## 🤝 Contributing
 
-This is an academic research project. For questions or collaboration:
+This is an academic research project. For collaboration:
 - Contact supervisors (see above)
-- Open an issue for technical discussions
+- Open issues for technical discussions
+
+---
 
 ## 📄 License
 
 [To be determined]
 
-## 🙏 Acknowledgments
+---
 
-- **Singa** / **J'accueille** platform for the message corpus
-- Musée national de l'histoire de l'immigration for collaboration
-- All the anonymous hosts who shared their stories
+**Repository**: https://github.com/MaxenceGuinziemba/A_FACE_TO_A_MESSAGE  
+**Branches**:
+- `main` - Documentation only
+- `data-management` - Code + notebooks + data
 
 ---
 
-*This project explores the intersection of AI, human testimony, and interactive art to create meaningful experiences around migration and hospitality.*
+*Exploring the intersection of AI, human testimony, and interactive art to create meaningful experiences around migration and hospitality.*
