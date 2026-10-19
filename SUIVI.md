@@ -56,6 +56,22 @@
 - [ ] Valider que les paramètres avatar varient réellement entre messages différents
 - [ ] Commencer l'intégration TTS (Text-to-Speech)
 
+## 19 octobre 2026 — Correction du notebook émotionnel
+
+- Retrait du classifieur d'émotions entraîné uniquement en anglais, qui attribuait notamment « disgust » et « anger » à des témoignages français.
+- Le modèle multilingue de polarité a d'abord été conservé avec une mise en garde, puis désactivé après vérification de faux négatifs sur des messages exprimant une intention solidaire.
+- Détection lexicale française rendue plus stricte (frontières de mots, accents, négation locale); les messages sans indice lexical ne sont plus artificiellement classés comme « solidarité ».
+- Correction de l'interpolation des paramètres avatar : moyennes pondérées et valeurs bornées selon les plages documentées.
+- Tests unitaires ajoutés. Les sorties ont été recalculées en exécutant `02_emotion.ipynb` de haut en bas; une validation humaine du lexique reste nécessaire.
+
+## 19 octobre 2026 — Suppression des polarités trompeuses
+
+- La pièce jointe reçue montrait encore l'ancienne version du notebook, et les sorties CSV/Parquet contenaient toujours les anciennes colonnes `sentiment_label`, `emo_*` et des vitesses avatar non bornées.
+- Vérification sur des exemples : le modèle Twitter donnait « négatif » à « Je veux venir en aide aux Syriens » et à des propositions d'hébergement, malgré une intention d'aide explicite.
+- Le notebook n'utilise donc plus le classifieur positif/neutre/négatif ; il ne produit que les indices du lexique contextuel français et indique `non_determinee` en l'absence d'indice.
+- Cause des paramètres avatar constants : le notebook transmettait des clés `dim_*` au mapping qui attend des noms de dimensions sans préfixe, ce qui donnait les valeurs par défaut à tous les messages. Le mapping des scores est corrigé et une assertion empêche cette régression.
+- Le CSV/Parquet émotionnel, la configuration avatar et les statistiques ont été recalculés depuis le corpus brut. Les paramètres varient maintenant sur les 8 707 messages (ex. `voice_speed` : 0,75–1,20). Une polarité supervisée nécessitera des annotations humaines représentatives et une évaluation dédiée.
+
 ### Fichiers produits
 
 ```

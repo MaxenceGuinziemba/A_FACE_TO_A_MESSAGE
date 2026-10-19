@@ -64,6 +64,8 @@ Open: `notebooks/03_random_message_viewer.ipynb`
 3. **Avatar Animation** - Animated faces with synchronized expressions
 4. **Visitor Interaction** - Detect presence and trigger responses
 
+**Current analysis note**: `notebooks/02_emotion.ipynb` does not assign positive/neutral/negative sentiment: the generic Twitter model tested on the corpus gave misleading negative labels for messages expressing a wish to help. Its current French contextual lexicon provides exploratory signals only and still requires human validation.
+
 **Installation**: Wall of faces (4m × 1.15m touchscreen) - avatars react to visitors
 
 ---

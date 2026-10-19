@@ -110,6 +110,8 @@ It will be used to control:
 - Facial expressions
 - Certain avatar behaviors
 
+The current notebook implementation is exploratory: it does not assign positive/neutral/negative sentiment because the generic Twitter model tested on this corpus produced misleading negative labels for messages expressing a wish to help. Emotion dimensions are heuristic signals from a French contextual lexicon and require human validation; they are not a validated reading of a person's intent or emotional state.
+
 ### 2. Voice Synthesis
 Implement a Text-to-Speech solution to automatically transform text into speech.
 

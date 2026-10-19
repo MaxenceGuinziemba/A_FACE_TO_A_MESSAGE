@@ -1,48 +1,38 @@
 {
-  "sentiment_distribution": {
-    "positive": 5611,
-    "neutral": 1595,
-    "negative": 1501
-  },
-  "dominant_emotions": {
-    "neutral": 3535,
-    "disgust": 2302,
-    "anger": 1146,
-    "joy": 868,
-    "fear": 575,
-    "sadness": 255,
-    "surprise": 26
-  },
+  "sentiment_analysis": "Not produced: previous generic Twitter model was unreliable on this corpus.",
+  "emotion_method": "Heuristic French context lexicon; requires human validation.",
   "dominant_dimensions": {
-    "solidarite": 4503,
-    "chaleur": 2225,
-    "empathie": 814,
-    "urgence": 447,
-    "espoir": 372,
-    "tristesse": 150,
-    "determination": 122,
-    "indignation": 74
+    "non_determinee": 4111,
+    "chaleur": 1971,
+    "solidarite": 1167,
+    "empathie": 555,
+    "espoir": 349,
+    "urgence": 301,
+    "tristesse": 162,
+    "determination": 62,
+    "indignation": 29
   },
+  "messages_without_lexical_evidence": 4111,
   "mean_voice_params": {
-    "pitch": 0.03127670938830434,
-    "speed": 2.090319981821072,
-    "energy": 1.1047175609546978,
-    "warmth": 1.2279010471560097
+    "pitch": 0.022034408932223193,
+    "speed": 0.9754234149193188,
+    "energy": 0.53445606454806,
+    "warmth": 0.6626693839768422
   },
   "mean_face_params": {
-    "eyebrows": 0.125515884242212,
-    "mouth": 0.15602032560353699,
-    "eyes": 1.2053301655956106,
-    "gaze": 1.2862841244362413
+    "eyebrows": 0.11226978404573659,
+    "mouth": 0.15961387986116174,
+    "eyes": 0.6231289935933,
+    "gaze": 0.6922577501436601
   },
   "mean_dimensions": {
-    "solidarite": 0.07625583137814676,
-    "empathie": 0.06950100357129185,
-    "urgence": 0.04471880862141572,
-    "chaleur": 0.16250334979518397,
-    "tristesse": 0.027307530339573522,
-    "espoir": 0.0529223886637462,
-    "determination": 0.026740936411316567,
-    "indignation": 0.01715477967918533
+    "solidarite": 0.05937505127237526,
+    "empathie": 0.037395199264959225,
+    "urgence": 0.02370123655296505,
+    "chaleur": 0.12497581346208886,
+    "tristesse": 0.020259561272539334,
+    "espoir": 0.04029489135725497,
+    "determination": 0.01178362237280349,
+    "indignation": 0.005704222656100455
   }
 }
