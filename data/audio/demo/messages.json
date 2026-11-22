@@ -1,0 +1,344 @@
+[
+  {
+    "id": "solidarite_F2_5392",
+    "text": "ça me semble un bonne initiative, je que des information par les média, et je connais pas aucun autre façon de rentrer en contact avec des réfugiées.",
+    "raw_text": "ça me semble un bonne initiative, je que des information par les media, et je connais pas aucun autre façon de rentrer en contact avec des refugiées",
+    "voice_params": {
+      "voice_pitch": 0.0,
+      "voice_speed": 1.0,
+      "voice_energy": 0.5,
+      "voice_warmth": 0.5,
+      "face_eyebrows": 0.0,
+      "face_mouth": 0.0,
+      "face_eyes": 0.5,
+      "face_gaze": 0.5
+    },
+    "dominant_dim": "solidarite",
+    "row_id": "F2_5392",
+    "voice_name": "Eloise",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "solidarite_F1_0371",
+    "text": "Par hasard en cherchant sur internetvcomment me rendre utile par les temps qui courent Le déclencheur a qd même été la lecture du monde ce soir.",
+    "raw_text": "Par hasard en cherchant sur internetvcomment me rendre utile par les temps qui courent\nLe déclencheur a qd meme été la lecture du monde ce soir",
+    "voice_params": {
+      "voice_pitch": 0.0,
+      "voice_speed": 1.0,
+      "voice_energy": 0.5,
+      "voice_warmth": 0.5,
+      "face_eyebrows": 0.0,
+      "face_mouth": 0.0,
+      "face_eyes": 0.5,
+      "face_gaze": 0.5
+    },
+    "dominant_dim": "solidarite",
+    "row_id": "F1_0371",
+    "voice_name": "Eloise",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "empathie_F2_3814",
+    "text": "Nous sommes le peuple, peu importe nos origines, je me sens concerné par la détresse de ces personnes qui fuient les violences et souhaite agir en proposant un espace de vie agréable, sain.",
+    "raw_text": "Nous sommes le peuple, peu importe nos origines, je me sens concerné par la détresse de ces personnes qui fuient les violences et souhaite agir en proposant un espace de vie agréable, sain",
+    "voice_params": {
+      "voice_pitch": 0.07297297297297295,
+      "voice_speed": 1.0013513513513514,
+      "voice_energy": 0.5945945945945946,
+      "voice_warmth": 0.6405405405405405,
+      "face_eyebrows": 0.3162162162162162,
+      "face_mouth": -0.08648648648648649,
+      "face_eyes": 0.772972972972973,
+      "face_gaze": 0.8864864864864865
+    },
+    "dominant_dim": "empathie",
+    "row_id": "F2_3814",
+    "voice_name": "Vivienne",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "urgence_F1_0643",
+    "text": "Initiative enfin concrète: tenter, retenter, signer des pétitions, faire des dons,... déjà fait. Il faut passer aux actes maintenant et vous le proposez... alors let's go.",
+    "raw_text": "Initiative enfin concrète: tweeter,retweeter,signer des péritions,faire des dons,...déjà fait.Il faut passer aux actes maintenant et vous le proposez...alors let's go",
+    "voice_params": {
+      "voice_pitch": 0.13620689655172416,
+      "voice_speed": 1.0681034482758622,
+      "voice_energy": 0.7543103448275862,
+      "voice_warmth": 0.48275862068965525,
+      "face_eyebrows": 0.26379310344827583,
+      "face_mouth": 0.010344827586206874,
+      "face_eyes": 0.8362068965517242,
+      "face_gaze": 1.0
+    },
+    "dominant_dim": "urgence",
+    "row_id": "F1_0643",
+    "voice_name": "Eloise",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "urgence_F1_0180",
+    "text": "Depuis le début de la crise de réfugies actuelle, nous pensons que notre logement pourrait aider des gens en besoin. Nous aimons voyager et rencontrer des gens.",
+    "raw_text": "Depuis le debut de la crise de refugies actuelle, nous pensons que notre logement pourrait aider des gens en besoin. Nous aimons voyager et rencontrer des gens.",
+    "voice_params": {
+      "voice_pitch": 0.15,
+      "voice_speed": 1.0499999999999998,
+      "voice_energy": 0.6749999999999999,
+      "voice_warmth": 0.6499999999999999,
+      "face_eyebrows": 0.39999999999999997,
+      "face_mouth": 0.19999999999999998,
+      "face_eyes": 0.85,
+      "face_gaze": 0.95
+    },
+    "dominant_dim": "urgence",
+    "row_id": "F1_0180",
+    "voice_name": "Eloise",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "chaleur_F2_2779",
+    "text": "J'ai eu l'occasion de faire le recensement dans ma région d'origine, la Lorraine. J'ai recensé des gens venus des pays de l'Est demandeurs d'asile en situation d'attente et j'ai discuté avec eux et des raisons de leur venue en France. C'était des familles avec des enfants et je me suis simplement reconnue en eux et imaginée être à leur place. J'aurais sans doute fuis aussi. Ma dire motivation à accueillir, est altruiste et humaniste. La me se situe au niveau de mon propre enrichissement personnel, apprendre de l'autre et sur soi même, et la me motivation est pour donner une ouverture d'esprit et une tolérance à mon fils et qu'il se rende compte que tous ne sont pas aussi privilégiés, lui apprendre à relativiser et à se contenter de ce qu'il a, un toit, à manger et de l'amour!",
+    "raw_text": "J'ai eu l'occasion de faire le recensement dans ma région d'origine, la Lorraine. J'ai recensé des gens venus des pays de l'Est demandeurs d'asile en situation d'attente et j'ai discuté avec eux et des raisons de leur venue en France. C'était des familles avec des enfants et je me suis simplement reconnue en eux et imaginée être à leur place. J'aurais sans doute fuis aussi. Ma 1ere motivation à accueillir, est altruiste et humaniste. La 2eme se situe au niveau de mon propre enrichissement personnel, apprendre de l'autre et sur soi même, et la 3eme motivation est pour donner une ouverture d'esprit et une tolérance à mon fils et qu'il se rende compte que tous ne sont pas aussi privilégiés, lui apprendre à relativiser et à se contenter de ce qu'il a, un toit, à manger et de l'amour!",
+    "voice_params": {
+      "voice_pitch": -0.01655629139072848,
+      "voice_speed": 0.9155629139072848,
+      "voice_energy": 0.5311258278145695,
+      "voice_warmth": 0.8403973509933775,
+      "face_eyebrows": 0.1357615894039735,
+      "face_mouth": 0.26225165562913905,
+      "face_eyes": 0.6834437086092715,
+      "face_gaze": 0.899337748344371
+    },
+    "dominant_dim": "chaleur",
+    "row_id": "F2_2779",
+    "voice_name": "Vivienne",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "tristesse_F2_5536",
+    "text": "Un ami m'en a parlé et nous devons tous être la pour les réfugiés qui fuit la guerre.",
+    "raw_text": "Un ami m'en a parlé et nous devons tous être la pour les réfugiés qui fuit la guerre",
+    "voice_params": {
+      "voice_pitch": -0.3,
+      "voice_speed": 0.75,
+      "voice_energy": 0.3,
+      "voice_warmth": 0.6,
+      "face_eyebrows": -0.3,
+      "face_mouth": -0.5,
+      "face_eyes": 0.3,
+      "face_gaze": 0.3
+    },
+    "dominant_dim": "tristesse",
+    "row_id": "F2_5536",
+    "voice_name": "Denise",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "tristesse_F2_5787",
+    "text": "Cela me paraît être une bonne manière d'apporter mon soutien et mon aide à ceux qui en ont besoin, je ne peux malheureusement guère faire plus...",
+    "raw_text": "Cela me paraît être une bonne manière d'apporter mon soutien et mon aide à ceux qui en ont besoin, je ne peux malheureusement guère faire plus...",
+    "voice_params": {
+      "voice_pitch": -0.04999999999999998,
+      "voice_speed": 0.875,
+      "voice_energy": 0.44999999999999996,
+      "voice_warmth": 0.7,
+      "face_eyebrows": 0.05000000000000002,
+      "face_mouth": -0.049999999999999996,
+      "face_eyes": 0.6,
+      "face_gaze": 0.5
+    },
+    "dominant_dim": "tristesse",
+    "row_id": "F2_5787",
+    "voice_name": "Denise",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "espoir_F2_1672",
+    "text": "Je suis pour la reconnaissance des droits des réfugiés sur notre territoire, et me bats en agissant auj. J'espère de tout cour pouvoir recevoir une ou plusieurs personne réfugiée qui a tous ces droits ici. Je suis engagée humainement et de nature à préserver l'environnement, je suis prête à les aider à apprendre le français, et ds leurs démarches sociales. Seul Hic, je suis une voyageuse et peut - être bientôt en mouvement à nouveau... ( pas avant 2017 ).",
+    "raw_text": "Je suis pour la reconnaissance des droits des réfugiés sur notre territoire, et me bats en agissant auj. J'espère de tout cœur pouvoir recevoir une ou plusieurs personne réfugiée qui a tous ces droits ici. \nJe suis engagée humainement et de nature à préserver l'environnement, je suis prête à les aider à apprendre le français, et ds leurs démarches sociales. \nSeul Hic, je suis une voyageuse et peut-être bientôt en mouvement à nouveau... (pas avant 2017)",
+    "voice_params": {
+      "voice_pitch": 0.06363636363636364,
+      "voice_speed": 0.9659090909090909,
+      "voice_energy": 0.6136363636363636,
+      "voice_warmth": 0.7045454545454546,
+      "face_eyebrows": 0.16818181818181818,
+      "face_mouth": 0.18181818181818182,
+      "face_eyes": 0.7636363636363637,
+      "face_gaze": 0.8681818181818183
+    },
+    "dominant_dim": "espoir",
+    "row_id": "F2_1672",
+    "voice_name": "Eloise",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "espoir_F2_3634",
+    "text": "Mes motivations sont avant tout, humaines. En effet, si j'étais dans cette situation j'aurais apprécié une aide alors j'estime que si je suis capable de le faire, je dois le faire. J'espère également apprendre au travers de cette expérience.. Apprendre sur moi mais également sur les autres... Je souhaite également faire partager notre culture, notre façon de vivre...",
+    "raw_text": "Mes motivations sont avant tout, humaines. En effet, si j'étais dans cette situation j'aurais apprécié une aide alors j'estime que si je suis capable de le faire, je dois le faire. J'espère également apprendre au travers de cette expérience.. Apprendre sur moi mais également sur les autres... Je souhaite également faire partager notre culture, notre façon de vivre...",
+    "voice_params": {
+      "voice_pitch": 0.052631578947368425,
+      "voice_speed": 0.9368421052631578,
+      "voice_energy": 0.5578947368421052,
+      "voice_warmth": 0.7999999999999999,
+      "face_eyebrows": 0.1894736842105263,
+      "face_mouth": 0.2736842105263158,
+      "face_eyes": 0.7526315789473683,
+      "face_gaze": 0.8263157894736842
+    },
+    "dominant_dim": "espoir",
+    "row_id": "F2_3634",
+    "voice_name": "Eloise",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "determination_F2_3642",
+    "text": "Je viens de l'expliquer sommairement. la première des motivations est de montrer et de prouver à nos dirigeants qu'il n'est pas besoin d'eux pour agir. Ce que j'attends?: RIEN si ce n'est que je fais fais partie d'un peuple qui s'appelle la TERRE.",
+    "raw_text": "Je viens de l'expliquer sommairement. \nla première des motivations est de montrer et de prouver à nos \"dirigeants\" qu'il n'est pas besoin d'eux pour agir. \nCe que j'attends ? : RIEN si ce n'est que je fais fais partie d'un peuple qui s'appelle la TERRE.",
+    "voice_params": {
+      "voice_pitch": 0.0,
+      "voice_speed": 0.95,
+      "voice_energy": 0.7,
+      "voice_warmth": 0.5,
+      "face_eyebrows": -0.1,
+      "face_mouth": 0.0,
+      "face_eyes": 0.7,
+      "face_gaze": 1.0
+    },
+    "dominant_dim": "determination",
+    "row_id": "F2_3642",
+    "voice_name": "Vivienne",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "determination_NP_8679",
+    "text": "Ne pouvant pas actuellement exercer une activité humanitaire car j'ai toujours une de mes filles à charge, je suis prête pour accueillir afin d'aider et d'échanger.",
+    "raw_text": "Ne pouvant pas actuellement exercer une activité humanitaire car j'ai toujours une de mes filles à charge, je suis prête pour accueillir afin d'aider et d'échanger.",
+    "voice_params": {
+      "voice_pitch": 0.0,
+      "voice_speed": 0.9394736842105262,
+      "voice_energy": 0.5947368421052631,
+      "voice_warmth": 0.731578947368421,
+      "face_eyebrows": 0.08947368421052629,
+      "face_mouth": 0.1894736842105263,
+      "face_eyes": 0.7,
+      "face_gaze": 0.9368421052631578
+    },
+    "dominant_dim": "determination",
+    "row_id": "NP_8679",
+    "voice_name": "Vivienne",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "indignation_F2_8142",
+    "text": "Envie de prouver à ceux qui en doutent que la France demeure une terre d'accueil, à jamais, et aussi qu'elle n'est pas raciste, pour qu'enfin on cite Brocard correctement si la France ne peut accueillir toute la misère du monde, elle se doit d'en accueillir sa juste part.... Pour que je n'ai plus honte d'être français: ) Pour donner une belle leçon aux fais, en un mot: POUR.",
+    "raw_text": "Envie de prouver à ceux qui en doutent que la France demeure une terre d'accueil, à jamais, et aussi qu'elle n'est pas raciste, pour qu'enfin on cite Rocard correctement si la France ne peut accueillir toute la misère du monde, elle se doit d'en accueillir sa juste part.... Pour que je n'ai plus honte d'être français :) Pour donner une belle leçon aux fafs, en un mot : POUR",
+    "voice_params": {
+      "voice_pitch": 0.12231404958677689,
+      "voice_speed": 1.0012396694214876,
+      "voice_energy": 0.6619834710743802,
+      "voice_warmth": 0.5371900826446281,
+      "face_eyebrows": -0.1628099173553719,
+      "face_mouth": -0.04214876033057854,
+      "face_eyes": 0.721487603305785,
+      "face_gaze": 0.8413223140495869
+    },
+    "dominant_dim": "indignation",
+    "row_id": "F2_8142",
+    "voice_name": "Denise",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "indignation_F1_0417",
+    "text": "Pour être utile et ne pas fermer les yeux sur le chaos et l'injustice. Parce que nous sommes citoyens et indignés Parce que les enfants sont les victimes collatérales et qu'on ne le supporte pas. C'est pourquoi nous serions heureux d'accueillir une maman et son enfant, si possible d'origine syrienne ( culture arabe commune ) mais ouvert à d'autres bien sur!",
+    "raw_text": "Pour être utile et ne pas fermer les yeux sur le chaos et l'injustice. Parce que nous sommes citoyens et indignés \nParce que les enfants sont les victimes collatérales et qu'on ne le supporte pas. C'est pourquoi nous serions heureux d'accueillir une maman et son enfant, si possible d'origine syrienne (culture arabe commune) mais ouvert à d'autres bien sur !",
+    "voice_params": {
+      "voice_pitch": 0.17165048543689324,
+      "voice_speed": 1.0210679611650486,
+      "voice_energy": 0.6918446601941748,
+      "voice_warmth": 0.6163106796116505,
+      "face_eyebrows": 0.0157281553398058,
+      "face_mouth": 0.17378640776699028,
+      "face_eyes": 0.8145631067961165,
+      "face_gaze": 0.9130097087378641
+    },
+    "dominant_dim": "indignation",
+    "row_id": "F1_0417",
+    "voice_name": "Denise",
+    "speaker_gender": "female"
+  },
+  {
+    "id": "chaleur_F2_3040",
+    "text": "motivation: Nous sommes pour une société plus convivial. Il y a beaucoup de gens en nécessité d ´ aide en ce moment, on aimerait bien aider au mon une personne. Et nous aussi on est content de faire cette expérience. C ´ est ca qu ´ il faut en Euros et dans le monde entier: ouverture, hospitalité, convivialité Qu ´ est qu ´ on attend: rencontrer des gens d ´ autres pays, partager des expériences et de la culture. Communication.",
+    "raw_text": "motivation: Nous sommes pour une société plus convivial. Il y a beaucoup de gens en nécessité d´aide en ce moment, on aimerait bien aider au moin une personne. Et nous aussi on est content de faire cette experience. C´est ca qu´il faut en Europe et dans le monde intier: ouverture, hospitalité, convivialité\n\nQu´est qu´on attend: rencontrer des gens d´autres pays, partager des experiences et de la culture. Communication",
+    "voice_params": {
+      "voice_pitch": 0.0407843137254902,
+      "voice_speed": 0.9382352941176472,
+      "voice_energy": 0.591764705882353,
+      "voice_warmth": 0.7807843137254903,
+      "face_eyebrows": 0.13372549019607843,
+      "face_mouth": 0.3450980392156863,
+      "face_eyes": 0.7407843137254901,
+      "face_gaze": 0.8949019607843137
+    },
+    "dominant_dim": "chaleur",
+    "row_id": "F2_3040",
+    "voice_name": "Vivienne",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "empathie_F2_4976",
+    "text": "Je suis très touchée par les conditions de vie de ces personnes, je souhaite proposer mon aide, les valeurs humaines sont des choses très importantes pour moi et je souhaiterai vivre cette expérience avec mes enfants qui sera très enrichissante humainement.",
+    "raw_text": "Je suis très touchée par les conditions de vie de ces personnes, je souhaite proposer mon aide, les valeurs humaines sont des choses très importantes pour moi et je souhaiterai vivre cette expérience avec mes enfants qui sera très enrichissante humainement.",
+    "voice_params": {
+      "voice_pitch": -0.054237288135593226,
+      "voice_speed": 0.8728813559322034,
+      "voice_energy": 0.44576271186440686,
+      "voice_warmth": 0.9457627118644067,
+      "face_eyebrows": 0.1457627118644068,
+      "face_mouth": 0.2745762711864407,
+      "face_eyes": 0.6457627118644067,
+      "face_gaze": 0.8457627118644068
+    },
+    "dominant_dim": "empathie",
+    "row_id": "F2_4976",
+    "voice_name": "Vivienne",
+    "speaker_gender": "unknown"
+  },
+  {
+    "id": "gender_female_F2_7891",
+    "text": "De part l'histoire de nos enfants adoptés et les missions à l'étranger, notamment pour mon mari, nous avons une sensibilité particulière à l'exclusion, les droits de l'homme ( non respectés ) … si nous pouvons faire quelquechose pour qu'une personne ou une famille puisse rebondir et se reconstruire une vie décente, alors nous voulons participer!",
+    "raw_text": "De part l'histoire de nos enfants adoptés et les missions à l'étranger , notamment pour mon mari , nous avons une sensibilité particulière à l'exclusion , les droits de l'homme (non respectés) … si nous pouvons faire quelquechose pour qu'une personne ou une famille puisse rebondir et se reconstruire une vie décente , alors nous voulons participer !",
+    "voice_params": {
+      "voice_pitch": 0.1,
+      "voice_speed": 0.9966666666666667,
+      "voice_energy": 0.62,
+      "voice_warmth": 0.8066666666666666,
+      "face_eyebrows": 0.3,
+      "face_mouth": 0.4066666666666666,
+      "face_eyes": 0.7999999999999999,
+      "face_gaze": 0.8933333333333333
+    },
+    "dominant_dim": "solidarite",
+    "row_id": "F2_7891",
+    "voice_name": "Eloise",
+    "speaker_gender": "female"
+  },
+  {
+    "id": "gender_male_F1_0389",
+    "text": "La catastrophe humanitaire en Syrie me fait me dire depuis quelque temps que nous pouvons avoir un rôle à jouer pour aider les personnes qui fuient la guerre. La terrible photo du garçon retrouvé mort sur une place m'a décidé à en parler à ma femme. Nous étions d'accord pour proposer notre aide pour l'accueil des réfugiés, mais la principale organisation mettant en relation est religieuse. En cherchant d'autres associations sur internet nous avons trouvé des articles de presse mentionnant votre projet.",
+    "raw_text": "La catastrophe humanitaire en Syrie me fait me dire depuis quelque temps que nous pouvons avoir un rôle à jouer pour aider les personnes qui fuient la guerre.\nLa terrible photo du garçon retrouvé mort sur une place m'a décidé à en parler à ma femme. Nous étions d'accord pour proposer notre aide pour l'accueil des réfugiés, mais la principale organisation mettant en relation est religieuse. En cherchant d'autres associations sur internet nous avons trouvé des articles de presse mentionnant votre projet.",
+    "voice_params": {
+      "voice_pitch": -0.021200571700809905,
+      "voice_speed": 0.9402334444973799,
+      "voice_energy": 0.5599333015721772,
+      "voice_warmth": 0.6634111481657932,
+      "face_eyebrows": 0.10562172463077661,
+      "face_mouth": 0.007289185326345877,
+      "face_eyes": 0.654787994282992,
+      "face_gaze": 0.794187708432587
+    },
+    "dominant_dim": "solidarite",
+    "row_id": "F1_0389",
+    "voice_name": "Remy",
+    "speaker_gender": "male"
+  }
+]

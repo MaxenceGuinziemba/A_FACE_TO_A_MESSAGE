@@ -89,16 +89,17 @@ See [docs/PROJECT.md](docs/PROJECT.md) for detailed data structure.
 A_FACE_TO_A_MESSAGE/
 ├── data/
 │   ├── raw/              # Original Excel (gitignored)
-│   └── processed/        # Cleaned datasets
+│   ├── processed/        # Cleaned datasets + emotion profiles
+│   └── audio/demo/       # Generated audio + interactive player
 ├── src/
-│   ├── analysis/         # NLP & emotion detection
-│   ├── tts/             # Text-to-speech
+│   ├── analysis/         # NLP & emotion detection (emotion_v2.py)
+│   ├── tts/             # Text-to-speech engine (engine.py)
 │   ├── avatar/          # Avatar animation
 │   └── interaction/     # Visitor tracking
 ├── notebooks/           # Jupyter notebooks
-│   ├── 01_data_exploration.ipynb
-│   ├── 02_data_cleaning.ipynb      ⭐ Start here
-│   └── 03_random_message_viewer.ipynb
+│   ├── 01_corpus.ipynb           # Data extraction & cleaning
+│   └── 02_emotion.ipynb          # Emotion analysis v2 ⭐
+├── scripts/             # Build scripts
 ├── docs/                # Documentation
 ├── .venv/               # Virtual environment (gitignored)
 └── requirements.txt     # Python dependencies
@@ -115,7 +116,9 @@ A_FACE_TO_A_MESSAGE/
 - **Jupyter**: Interactive notebooks
 - **Computer Vision**: OpenCV (visitor tracking)
 
-**Next phases**: TTS engines, 3D avatars (Unity/Blender), real-time systems
+**Next phases**: 3D avatars (Unity/Blender), real-time interaction systems
+
+**TTS**: Edge TTS with 5 French voices, emotional prosody mapping, sentence-level variation
 
 ---
 
@@ -139,10 +142,10 @@ A_FACE_TO_A_MESSAGE/
 - [x] Repository setup and documentation
 - [x] Virtual environment configured
 - [x] Data exploration complete
-- [x] Data cleaning pipeline ready
-- [x] Interactive message viewer ready
-- [ ] Emotion analysis (in progress)
-- [ ] Voice synthesis integration
+- [x] Data cleaning pipeline ready (8,707 messages)
+- [x] Emotion analysis v2 (sentiment + 8 contextual dimensions + avatar params)
+- [x] Voice synthesis (5 French voices, emotional prosody, gender detection, spell correction)
+- [ ] Interactive message viewer
 - [ ] Avatar system design
 - [ ] Visitor interaction prototype
 

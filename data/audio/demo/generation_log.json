@@ -1,0 +1,344 @@
+[
+  {
+    "output_path": "data/audio/demo/solidarite_F2_5392.mp3",
+    "voice_name": "Vivienne",
+    "voice_id": "fr-FR-VivienneMultilingualNeural",
+    "voice_gender": "female",
+    "dominant_dim": "solidarite",
+    "params": {
+      "voice_pitch": 0.0,
+      "voice_speed": 1.0,
+      "voice_energy": 0.5,
+      "voice_warmth": 0.5,
+      "face_eyebrows": 0.0,
+      "face_mouth": 0.0,
+      "face_eyes": 0.5,
+      "face_gaze": 0.5
+    },
+    "id": "solidarite_F2_5392",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/solidarite_F1_0371.mp3",
+    "voice_name": "Vivienne",
+    "voice_id": "fr-FR-VivienneMultilingualNeural",
+    "voice_gender": "female",
+    "dominant_dim": "solidarite",
+    "params": {
+      "voice_pitch": 0.0,
+      "voice_speed": 1.0,
+      "voice_energy": 0.5,
+      "voice_warmth": 0.5,
+      "face_eyebrows": 0.0,
+      "face_mouth": 0.0,
+      "face_eyes": 0.5,
+      "face_gaze": 0.5
+    },
+    "id": "solidarite_F1_0371",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/empathie_F2_3814.mp3",
+    "voice_name": "Vivienne",
+    "voice_id": "fr-FR-VivienneMultilingualNeural",
+    "voice_gender": "female",
+    "dominant_dim": "empathie",
+    "params": {
+      "voice_pitch": 0.07297297297297295,
+      "voice_speed": 1.0013513513513514,
+      "voice_energy": 0.5945945945945946,
+      "voice_warmth": 0.6405405405405405,
+      "face_eyebrows": 0.3162162162162162,
+      "face_mouth": -0.08648648648648649,
+      "face_eyes": 0.772972972972973,
+      "face_gaze": 0.8864864864864865
+    },
+    "id": "empathie_F2_3814",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/urgence_F1_0643.mp3",
+    "voice_name": "Henri",
+    "voice_id": "fr-FR-HenriNeural",
+    "voice_gender": "male",
+    "dominant_dim": "urgence",
+    "params": {
+      "voice_pitch": 0.13620689655172416,
+      "voice_speed": 1.0681034482758622,
+      "voice_energy": 0.7543103448275862,
+      "voice_warmth": 0.48275862068965525,
+      "face_eyebrows": 0.26379310344827583,
+      "face_mouth": 0.010344827586206874,
+      "face_eyes": 0.8362068965517242,
+      "face_gaze": 1.0
+    },
+    "id": "urgence_F1_0643",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/urgence_F1_0180.mp3",
+    "voice_name": "Henri",
+    "voice_id": "fr-FR-HenriNeural",
+    "voice_gender": "male",
+    "dominant_dim": "urgence",
+    "params": {
+      "voice_pitch": 0.15,
+      "voice_speed": 1.0499999999999998,
+      "voice_energy": 0.6749999999999999,
+      "voice_warmth": 0.6499999999999999,
+      "face_eyebrows": 0.39999999999999997,
+      "face_mouth": 0.19999999999999998,
+      "face_eyes": 0.85,
+      "face_gaze": 0.95
+    },
+    "id": "urgence_F1_0180",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/chaleur_F2_2779.mp3",
+    "voice_name": "Vivienne",
+    "voice_id": "fr-FR-VivienneMultilingualNeural",
+    "voice_gender": "female",
+    "dominant_dim": "chaleur",
+    "params": {
+      "voice_pitch": -0.01655629139072848,
+      "voice_speed": 0.9155629139072848,
+      "voice_energy": 0.5311258278145695,
+      "voice_warmth": 0.8403973509933775,
+      "face_eyebrows": 0.1357615894039735,
+      "face_mouth": 0.26225165562913905,
+      "face_eyes": 0.6834437086092715,
+      "face_gaze": 0.899337748344371
+    },
+    "id": "chaleur_F2_2779",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/tristesse_F2_5536.mp3",
+    "voice_name": "Denise",
+    "voice_id": "fr-FR-DeniseNeural",
+    "voice_gender": "female",
+    "dominant_dim": "tristesse",
+    "params": {
+      "voice_pitch": -0.3,
+      "voice_speed": 0.75,
+      "voice_energy": 0.3,
+      "voice_warmth": 0.6,
+      "face_eyebrows": -0.3,
+      "face_mouth": -0.5,
+      "face_eyes": 0.3,
+      "face_gaze": 0.3
+    },
+    "id": "tristesse_F2_5536",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/tristesse_F2_5787.mp3",
+    "voice_name": "Henri",
+    "voice_id": "fr-FR-HenriNeural",
+    "voice_gender": "male",
+    "dominant_dim": "tristesse",
+    "params": {
+      "voice_pitch": -0.04999999999999998,
+      "voice_speed": 0.875,
+      "voice_energy": 0.44999999999999996,
+      "voice_warmth": 0.7,
+      "face_eyebrows": 0.05000000000000002,
+      "face_mouth": -0.049999999999999996,
+      "face_eyes": 0.6,
+      "face_gaze": 0.5
+    },
+    "id": "tristesse_F2_5787",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/espoir_F2_1672.mp3",
+    "voice_name": "Vivienne",
+    "voice_id": "fr-FR-VivienneMultilingualNeural",
+    "voice_gender": "female",
+    "dominant_dim": "espoir",
+    "params": {
+      "voice_pitch": 0.06363636363636364,
+      "voice_speed": 0.9659090909090909,
+      "voice_energy": 0.6136363636363636,
+      "voice_warmth": 0.7045454545454546,
+      "face_eyebrows": 0.16818181818181818,
+      "face_mouth": 0.18181818181818182,
+      "face_eyes": 0.7636363636363637,
+      "face_gaze": 0.8681818181818183
+    },
+    "id": "espoir_F2_1672",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/espoir_F2_3634.mp3",
+    "voice_name": "Vivienne",
+    "voice_id": "fr-FR-VivienneMultilingualNeural",
+    "voice_gender": "female",
+    "dominant_dim": "espoir",
+    "params": {
+      "voice_pitch": 0.052631578947368425,
+      "voice_speed": 0.9368421052631578,
+      "voice_energy": 0.5578947368421052,
+      "voice_warmth": 0.7999999999999999,
+      "face_eyebrows": 0.1894736842105263,
+      "face_mouth": 0.2736842105263158,
+      "face_eyes": 0.7526315789473683,
+      "face_gaze": 0.8263157894736842
+    },
+    "id": "espoir_F2_3634",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/determination_F2_3642.mp3",
+    "voice_name": "Denise",
+    "voice_id": "fr-FR-DeniseNeural",
+    "voice_gender": "female",
+    "dominant_dim": "determination",
+    "params": {
+      "voice_pitch": 0.0,
+      "voice_speed": 0.95,
+      "voice_energy": 0.7,
+      "voice_warmth": 0.5,
+      "face_eyebrows": -0.1,
+      "face_mouth": 0.0,
+      "face_eyes": 0.7,
+      "face_gaze": 1.0
+    },
+    "id": "determination_F2_3642",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/determination_NP_8679.mp3",
+    "voice_name": "Henri",
+    "voice_id": "fr-FR-HenriNeural",
+    "voice_gender": "male",
+    "dominant_dim": "determination",
+    "params": {
+      "voice_pitch": 0.0,
+      "voice_speed": 0.9394736842105262,
+      "voice_energy": 0.5947368421052631,
+      "voice_warmth": 0.731578947368421,
+      "face_eyebrows": 0.08947368421052629,
+      "face_mouth": 0.1894736842105263,
+      "face_eyes": 0.7,
+      "face_gaze": 0.9368421052631578
+    },
+    "id": "determination_NP_8679",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/indignation_F2_8142.mp3",
+    "voice_name": "Henri",
+    "voice_id": "fr-FR-HenriNeural",
+    "voice_gender": "male",
+    "dominant_dim": "indignation",
+    "params": {
+      "voice_pitch": 0.12231404958677689,
+      "voice_speed": 1.0012396694214876,
+      "voice_energy": 0.6619834710743802,
+      "voice_warmth": 0.5371900826446281,
+      "face_eyebrows": -0.1628099173553719,
+      "face_mouth": -0.04214876033057854,
+      "face_eyes": 0.721487603305785,
+      "face_gaze": 0.8413223140495869
+    },
+    "id": "indignation_F2_8142",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/indignation_F1_0417.mp3",
+    "voice_name": "Denise",
+    "voice_id": "fr-FR-DeniseNeural",
+    "voice_gender": "female",
+    "dominant_dim": "indignation",
+    "params": {
+      "voice_pitch": 0.17165048543689324,
+      "voice_speed": 1.0210679611650486,
+      "voice_energy": 0.6918446601941748,
+      "voice_warmth": 0.6163106796116505,
+      "face_eyebrows": 0.0157281553398058,
+      "face_mouth": 0.17378640776699028,
+      "face_eyes": 0.8145631067961165,
+      "face_gaze": 0.9130097087378641
+    },
+    "id": "indignation_F1_0417",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/chaleur_F2_3040.mp3",
+    "voice_name": "Remy",
+    "voice_id": "fr-FR-RemyMultilingualNeural",
+    "voice_gender": "male",
+    "dominant_dim": "chaleur",
+    "params": {
+      "voice_pitch": 0.0407843137254902,
+      "voice_speed": 0.9382352941176472,
+      "voice_energy": 0.591764705882353,
+      "voice_warmth": 0.7807843137254903,
+      "face_eyebrows": 0.13372549019607843,
+      "face_mouth": 0.3450980392156863,
+      "face_eyes": 0.7407843137254901,
+      "face_gaze": 0.8949019607843137
+    },
+    "id": "chaleur_F2_3040",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/empathie_F2_4976.mp3",
+    "voice_name": "Vivienne",
+    "voice_id": "fr-FR-VivienneMultilingualNeural",
+    "voice_gender": "female",
+    "dominant_dim": "empathie",
+    "params": {
+      "voice_pitch": -0.054237288135593226,
+      "voice_speed": 0.8728813559322034,
+      "voice_energy": 0.44576271186440686,
+      "voice_warmth": 0.9457627118644067,
+      "face_eyebrows": 0.1457627118644068,
+      "face_mouth": 0.2745762711864407,
+      "face_eyes": 0.6457627118644067,
+      "face_gaze": 0.8457627118644068
+    },
+    "id": "empathie_F2_4976",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/gender_female_F2_7891.mp3",
+    "voice_name": "Vivienne",
+    "voice_id": "fr-FR-VivienneMultilingualNeural",
+    "voice_gender": "female",
+    "dominant_dim": "solidarite",
+    "params": {
+      "voice_pitch": 0.1,
+      "voice_speed": 0.9966666666666667,
+      "voice_energy": 0.62,
+      "voice_warmth": 0.8066666666666666,
+      "face_eyebrows": 0.3,
+      "face_mouth": 0.4066666666666666,
+      "face_eyes": 0.7999999999999999,
+      "face_gaze": 0.8933333333333333
+    },
+    "id": "gender_female_F2_7891",
+    "status": "ok"
+  },
+  {
+    "output_path": "data/audio/demo/gender_male_F1_0389.mp3",
+    "voice_name": "Remy",
+    "voice_id": "fr-FR-RemyMultilingualNeural",
+    "voice_gender": "male",
+    "dominant_dim": "solidarite",
+    "params": {
+      "voice_pitch": -0.021200571700809905,
+      "voice_speed": 0.9402334444973799,
+      "voice_energy": 0.5599333015721772,
+      "voice_warmth": 0.6634111481657932,
+      "face_eyebrows": 0.10562172463077661,
+      "face_mouth": 0.007289185326345877,
+      "face_eyes": 0.654787994282992,
+      "face_gaze": 0.794187708432587
+    },
+    "id": "gender_male_F1_0389",
+    "status": "ok"
+  }
+]

@@ -17,7 +17,8 @@ nltk>=3.8.0
 # [To be determined based on chosen approach]
 
 # Text-to-Speech
-# [To be determined - options: gTTS, pyttsx3, Coqui TTS, etc.]
+edge-tts>=7.0.0  # Microsoft Edge TTS with SSML prosody control
+pyspellchecker>=0.8.0  # French spell checking for TTS text prep
 
 # Computer Vision (for visitor tracking)
 opencv-python>=4.8.0
