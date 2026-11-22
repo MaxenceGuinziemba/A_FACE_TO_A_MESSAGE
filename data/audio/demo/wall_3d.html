@@ -200,107 +200,116 @@ function createFace(data, index) {
   group.userData = { dim: data.dim, index: index, data: data };
 
   const color = hexToThreeColor(data.color);
+
+  // Head — flat mask shape (z-scale 0.55 so front surface ≈ z=0.60)
   const matBase = new THREE.MeshStandardMaterial({
     color: 0x1a1a1a,
-    roughness: 0.65,
-    metalness: 0.1,
+    roughness: 0.6,
+    metalness: 0.15,
     emissive: color,
-    emissiveIntensity: 0.08,
+    emissiveIntensity: 0.06,
   });
-
-  // Head — slightly flattened sphere
-  const headGeo = new THREE.SphereGeometry(1.1, 48, 48);
-  headGeo.scale(1, 1.2, 0.85);
+  const headGeo = new THREE.SphereGeometry(1.1, 64, 64);
+  headGeo.scale(1, 1.25, 0.55);
   const head = new THREE.Mesh(headGeo, matBase.clone());
   group.add(head);
   hoverTargets.push(head);
   head.userData = { dim: data.dim, index: index };
 
   const fp = data.face;
+  // Front surface z ≈ 1.1 * 0.55 = 0.605. Features go at z >= 0.58
 
-  // Eyes — recessed cavities + glowing pupils
-  const eyeSocket = new THREE.MeshStandardMaterial({
-    color: 0x000000,
-    roughness: 1.0,
-    metalness: 0,
+  // ── Eyes ──
+  const eyeSocketMat = new THREE.MeshStandardMaterial({
+    color: 0x050505, roughness: 1.0, metalness: 0,
   });
-  const eyeGlow = new THREE.MeshStandardMaterial({
-    color: color,
-    emissive: color,
-    emissiveIntensity: 0.6,
-    roughness: 0.3,
-    metalness: 0,
+  const eyeGlowMat = new THREE.MeshStandardMaterial({
+    color: color, emissive: color, emissiveIntensity: 0.8,
+    roughness: 0.2, metalness: 0.1,
   });
 
-  const eyeOpenness = 0.08 + fp.eyes * 0.14;
+  const eyeH = 0.06 + fp.eyes * 0.1;
+  const eyeY = 0.18 + fp.gaze * 0.06;
 
   [-1, 1].forEach(side => {
-    const socketGeo = new THREE.SphereGeometry(0.18, 24, 24);
-    socketGeo.scale(1, eyeOpenness / 0.18, 0.5);
-    const socket = new THREE.Mesh(socketGeo, eyeSocket);
-    socket.position.set(side * 0.35, 0.15 + fp.gaze * 0.05, 0.85);
+    // Socket — dark cavity carved into the face
+    const socketGeo = new THREE.SphereGeometry(0.16, 24, 16);
+    socketGeo.scale(1.1, eyeH / 0.12, 0.6);
+    const socket = new THREE.Mesh(socketGeo, eyeSocketMat);
+    socket.position.set(side * 0.34, eyeY, 0.56);
     group.add(socket);
 
-    const pupilGeo = new THREE.SphereGeometry(0.06 + fp.eyes * 0.04, 16, 16);
-    const pupil = new THREE.Mesh(pupilGeo, eyeGlow.clone());
-    pupil.position.set(side * 0.35, 0.15 + fp.gaze * 0.05, 0.9);
+    // Glowing pupil
+    const pSize = 0.045 + fp.eyes * 0.035;
+    const pupilGeo = new THREE.SphereGeometry(pSize, 16, 16);
+    const pupil = new THREE.Mesh(pupilGeo, eyeGlowMat.clone());
+    pupil.position.set(side * 0.34, eyeY, 0.62);
     pupil.userData.type = 'pupil';
+    pupil.userData.baseY = eyeY;
     group.add(pupil);
   });
 
-  // Eyebrows — thin ridges
+  // ── Eyebrows ──
   const browMat = new THREE.MeshStandardMaterial({
-    color: 0x222222,
-    emissive: color,
-    emissiveIntensity: 0.15,
-    roughness: 0.8,
+    color: 0x1a1a1a, emissive: color, emissiveIntensity: 0.2, roughness: 0.7,
   });
+  const browBaseY = 0.4 + fp.eyebrows * 0.12;
 
   [-1, 1].forEach(side => {
-    const browGeo = new THREE.BoxGeometry(0.28, 0.035, 0.08);
-    const brow = new THREE.Mesh(browGeo, browMat);
-    const browHeight = 0.38 + fp.eyebrows * 0.12;
-    brow.position.set(side * 0.35, browHeight, 0.88);
-    brow.rotation.z = side * (-fp.eyebrows * 0.2);
+    const browGeo = new THREE.BoxGeometry(0.3, 0.05, 0.12);
+    const brow = new THREE.Mesh(browGeo, browMat.clone());
+    brow.position.set(side * 0.34, browBaseY, 0.58);
+    brow.rotation.z = side * (-fp.eyebrows * 0.25);
     brow.userData.type = 'brow';
+    brow.userData.baseY = browBaseY;
     group.add(brow);
   });
 
-  // Mouth — curved line using tube geometry
-  const mouthCurve = fp.mouth;
-  const mouthPoints = [];
-  for (let i = 0; i <= 20; i++) {
-    const t = (i / 20 - 0.5) * 2;
-    const mx = t * 0.25;
-    const my = -0.35 + mouthCurve * 0.08 * (1 - t * t);
-    const mz = 0.88 - Math.abs(t) * 0.05;
-    mouthPoints.push(new THREE.Vector3(mx, my, mz));
-  }
-  const mouthPath = new THREE.CatmullRomCurve3(mouthPoints);
-  const mouthGeo = new THREE.TubeGeometry(mouthPath, 20, 0.02, 8, false);
-  const mouthMat = new THREE.MeshStandardMaterial({
-    color: 0x111111,
-    emissive: color,
-    emissiveIntensity: 0.3,
-    roughness: 0.5,
-  });
-  const mouthMesh = new THREE.Mesh(mouthGeo, mouthMat);
-  mouthMesh.userData.type = 'mouth';
-  mouthMesh.userData.baseCurve = mouthCurve;
-  group.add(mouthMesh);
-
-  // Nose — subtle ridge
-  const noseGeo = new THREE.ConeGeometry(0.06, 0.2, 8);
-  const nose = new THREE.Mesh(noseGeo, matBase.clone());
-  nose.position.set(0, -0.05, 0.95);
+  // ── Nose ──
+  const noseMat = matBase.clone();
+  noseMat.emissiveIntensity = 0.03;
+  const noseGeo = new THREE.ConeGeometry(0.05, 0.22, 8);
+  const nose = new THREE.Mesh(noseGeo, noseMat);
+  nose.position.set(0, 0.0, 0.63);
   nose.rotation.x = -0.3;
   group.add(nose);
 
-  // Point light halo behind the face
-  const haloLight = new THREE.PointLight(color, 0.4, 5);
-  haloLight.position.set(x, y, -1.5);
+  // ── Mouth ──
+  const mouthCurve = fp.mouth;
+  const mW = 0.3;
+  const mouthMat = new THREE.MeshStandardMaterial({
+    color: 0x080808, emissive: color, emissiveIntensity: 0.35, roughness: 0.4,
+  });
+
+  function buildMouthGeo(curve, openAmount) {
+    const pts = [];
+    for (let i = 0; i <= 24; i++) {
+      const s = (i / 24 - 0.5) * 2;
+      const mx = s * mW;
+      const my = -0.38 + curve * 0.12 * (1 - s * s);
+      const mz = 0.58 - Math.abs(s) * 0.03;
+      pts.push(new THREE.Vector3(mx, my, mz));
+    }
+    const path = new THREE.CatmullRomCurve3(pts);
+    return new THREE.TubeGeometry(path, 24, 0.025 + openAmount * 0.015, 8, false);
+  }
+
+  const mouthMesh = new THREE.Mesh(buildMouthGeo(mouthCurve, 0), mouthMat);
+  mouthMesh.userData.type = 'mouth';
+  mouthMesh.userData.baseCurve = mouthCurve;
+  mouthMesh.userData.mW = mW;
+  group.add(mouthMesh);
+
+  // ── Halo light behind face ──
+  const haloLight = new THREE.PointLight(color, 0.5, 6);
+  haloLight.position.set(x, y, -1.8);
   scene.add(haloLight);
   faceLights.push(haloLight);
+
+  // ── Rim light from behind (subtle edge glow) ──
+  const rimLight = new THREE.PointLight(color, 0.2, 3);
+  rimLight.position.set(x, y + 0.5, -0.8);
+  scene.add(rimLight);
 
   scene.add(group);
   faceGroups.push(group);
@@ -411,46 +420,48 @@ function animate() {
       // Active face: talking animation
       group.children.forEach(child => {
         if (child.userData.type === 'mouth') {
-          // Regenerate mouth with speech oscillation
           const baseCurve = child.userData.baseCurve;
-          const talk = Math.sin(t * 12) * 0.3 + Math.sin(t * 17) * 0.15 + Math.sin(t * 7) * 0.2;
+          const mW = child.userData.mW;
+          const talk = Math.sin(t * 12) * 0.4 + Math.sin(t * 17) * 0.2 + Math.sin(t * 7) * 0.25;
+          const openAmt = Math.abs(talk);
           const pts = [];
-          for (let j = 0; j <= 20; j++) {
-            const s = (j / 20 - 0.5) * 2;
-            const mx = s * 0.25;
-            const my = -0.35 + (baseCurve + talk * 0.3) * 0.08 * (1 - s * s);
-            const mz = 0.88 - Math.abs(s) * 0.05;
+          for (let j = 0; j <= 24; j++) {
+            const s = (j / 24 - 0.5) * 2;
+            const mx = s * mW;
+            const my = -0.38 + (baseCurve + talk * 0.35) * 0.12 * (1 - s * s);
+            const mz = 0.58 - Math.abs(s) * 0.03;
             pts.push(new THREE.Vector3(mx, my, mz));
           }
           const curve = new THREE.CatmullRomCurve3(pts);
-          const newGeo = new THREE.TubeGeometry(curve, 20, 0.02 + Math.abs(talk) * 0.008, 8, false);
+          const newGeo = new THREE.TubeGeometry(curve, 24, 0.025 + openAmt * 0.015, 8, false);
           child.geometry.dispose();
           child.geometry = newGeo;
         }
 
         if (child.userData.type === 'pupil') {
-          // Pupils dilate slightly when speaking
-          const s = 1 + Math.sin(t * 3) * 0.1;
+          const s = 1 + Math.sin(t * 3) * 0.12;
           child.scale.setScalar(s);
         }
 
         if (child.userData.type === 'brow') {
-          // Subtle brow movement while speaking
-          const shift = Math.sin(t * 2.5 + (child.position.x > 0 ? 0.5 : 0)) * 0.02;
-          child.position.y += shift;
+          const shift = Math.sin(t * 2.5 + (child.position.x > 0 ? 0.5 : 0)) * 0.025;
+          child.position.y = child.userData.baseY + shift;
         }
       });
 
-      // Pulse halo
-      faceLights[i].intensity = 1.2 + Math.sin(t * 2) * 0.4;
-
-      // Slight forward lean
-      group.rotation.x = Math.sin(t * 0.7) * 0.03;
-      group.rotation.y = Math.sin(t * 0.5) * 0.02;
+      faceLights[i].intensity = 1.3 + Math.sin(t * 2) * 0.5;
+      group.rotation.x = Math.sin(t * 0.7) * 0.04;
+      group.rotation.y = Math.sin(t * 0.5) * 0.03;
     } else {
-      // Idle: very subtle rotation
       group.rotation.y = Math.sin(t * 0.3 + i * 0.8) * 0.05;
       group.rotation.x = Math.sin(t * 0.4 + i * 1.2) * 0.02;
+
+      // Reset brows to base position when idle
+      group.children.forEach(child => {
+        if (child.userData.type === 'brow') {
+          child.position.y = child.userData.baseY;
+        }
+      });
     }
   });
 
