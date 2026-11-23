@@ -1,6 +1,6 @@
 # A FACE TO A MESSAGE — Historique du projet
 
-> **Vision** : Transformer 20 000 témoignages de solidarité en avatars émotionnels interactifs  
+> **Objectif** : Transformer 20 000 témoignages de solidarité en avatars émotionnels interactifs  
 > **Installation** : Mur de visages 3D (4m × 1.15m) au Musée national de l'histoire de l'immigration  
 > **Pipeline** : TEXTE → ÉMOTIONS → VOIX → VISAGE ANIMÉ → INTERACTION VISITEUR
 
@@ -18,30 +18,13 @@ Chaque témoignage devient un **visage sculptural** qui parle avec sa propre voi
 
 ## 📚 Stack technique
 
-### Core NLP & Emotion
-- **XLM-RoBERTa** (Hugging Face) — validation multilingue zero-shot
-- **Lexique contextuel français v2** — 8 dimensions, ~200 patterns (racines + phrases)
-- **spaCy** — tokenisation, lemmatisation
-
-### Text-to-Speech
-- **Edge TTS** (Microsoft) — 4 voix adultes françaises (Vivienne, Denise, Remy, Henri)
-- **pyspellchecker** — correction orthographique avec élisions françaises
-- Prosodie SSML : pitch ±10Hz, speed ±15%, volume ±15%
-
-### Avatar & Visuel
-- **Three.js r128** — rendu 3D temps réel (WebGL)
-- **SVG animé** — version 2D légère (MVP)
-- Masques sculpturaux abstraits (style musée)
-
-### Data & Infra
-- **pandas, numpy** — traitement corpus (8 707 messages)
-- **Jupyter** — notebooks interactifs
-- **GitHub** — versioning, branche `data-management`
-
-### Perspectives
-- **Bark (Suno AI)** — TTS ultra-expressif (GPU required)
-- **Unity/Blender** — avatars 3D photoréalistes (installation finale)
-- **OpenCV/MediaPipe** — détection visiteurs
+| Catégorie | Technologies & Usages |
+|-----------|----------------------|
+| **Core NLP & Emotion** | **XLM-RoBERTa** (Hugging Face) : validation multilingue zero-shot<br>**Lexique contextuel français v2** : 8 dimensions (cf au dessus)<br>**spaCy** : tokenisation et lemmatisation |
+| **Text-to-Speech** | **Edge TTS** (Microsoft) : 4 voix adultes françaises (Vivienne, Denise, Remy, Henri)<br>**pyspellchecker** : correction orthographique<br>Prosodie SSML : pitch ±10Hz, speed ±15%, volume ±15% |
+| **Avatar & Visuel** | **Three.js r128** : rendu 3D temps réel (WebGL)<br>**SVG animé** : version 2D légère (MVP) |
+| **Data & Infra** | **pandas, numpy** : traitement du corpus de 8 707 messages<br>**Jupyter** : notebooks interactifs |
+| **Perspectives** | **Bark (Suno AI)** : synthèse vocale ultra-expressive (nécessite un GPU)<br>**Unity / Blender** : création d'avatars 3D photoréalistes pour l'installation finale<br>**OpenCV / MediaPipe** : détection de la présence des visiteurs |
 
 ---
 
@@ -62,13 +45,13 @@ Chaque témoignage devient un **visage sculptural** qui parle avec sa propre voi
 
 ---
 
-### 🔴 Phase 2 : Émotions v1 — Échec (Oct 10-19)
+### 🔴 Phase 2 : Émotions v1 (Oct 10-19)
 **Objectif** : Analyser émotions + générer paramètres avatar
 
 ❌ **Problèmes** :
-1. **Modèle anglais sur texte français** → `disgust` et `anger` dominaient (absurde)
-2. **Scores lexique trop faibles** → paramètres avatar figés à 0.0 / 0.5
-3. **Bug normalisation** → `voice_speed = 4.2` (au lieu de max 1.5)
+1. **Modèle anglais sur texte français** : prédominance erronée des émotions `disgust` et `anger`
+2. **Scores du lexique insuffisants** : paramètres de l'avatar figés à 0.0 / 0.5
+3. **Erreur de normalisation** : `voice_speed = 4.2` (au lieu du maximum recommandé de 1.5)
 
 📊 **Stats v1 (bugguées)** :
 - 64% positif, 18% neutre, 17% négatif ← faux négatifs massifs
@@ -77,18 +60,18 @@ Chaque témoignage devient un **visage sculptural** qui parle avec sa propre voi
 
 ---
 
-### 🟢 Phase 3 : Émotions v2 — Correction (Oct 19 - Nov 22)
+### 🟢 Phase 3 : Émotions v2 (Oct 19 - Nov 1)
 **Objectif** : Pipeline français fiable, paramètres qui varient
 
 ✅ **Corrections** :
-1. **Modèle anglais supprimé** → remplacé par lexique v2 + validation XLM-RoBERTa
+1. **Remplacement du modèle anglais** : transition vers le lexique v2 et validation par XLM-RoBERTa
 2. **Lexique v2 : 3× plus de patterns**
    - Racines (accueil → accueillir, accueilli, accueillant…)
    - Phrases multi-mots ("venir en aide", "ouvrir les portes")
    - ~25 racines + ~20 phrases par dimension
 3. **Bug normalisation fixé**
-   - v1 : défauts ajoutés au cumul → explosion des valeurs
-   - v2 : cumul part de zéro, défauts seulement si aucune émotion
+   - v1 : ajouts cumulatifs des valeurs par défaut entraînant une dérive des résultats
+   - v2 : initialisation à zéro avec intégration des valeurs par défaut uniquement si aucune émotion n'est détectée
    - Clamping strict des plages
 
 📊 **Stats v2 (corrigées)** :
@@ -97,72 +80,47 @@ Chaque témoignage devient un **visage sculptural** qui parle avec sa propre voi
 - Exemple : `voice_speed` ∈ [0.75, 1.20] (plage valide [0.5, 1.5])
 
 📦 **Livrables** :
-- `src/analysis/emotion_v2.py` — module réutilisable
-- `notebooks/02_emotion.ipynb` — pipeline complet
+- `src/analysis/emotion_v2.py` : module réutilisable
+- `notebooks/02_emotion.ipynb` : pipeline complet d'analyse
 - `data/processed/corpus_with_emotions.parquet`
 
 ---
 
-### 🟢 Phase 4 : TTS v1-v3 (Nov 22)
+### 🟢 Phase 4 : TTS v1-v3 (Nov 1 - Nov 12)
 **Objectif** : Voix françaises expressives, mapping émotions → prosodie
 
-**TTS v1** (Nov 22 matin) :
-- Edge TTS, 5 voix, prosodie large (pitch ±50Hz)
-- ❌ **Problème** : voix sonnaient comme des enfants
-
-**TTS v2** (Nov 22 après-midi) :
-- Préparation texte (élisions, orthographe, genre)
-- Détection genre (« mon mari » → voix féminine)
-- ❌ **Problème** : troncature audio, découpage par phrases
-
-**TTS v3** (Nov 22 soir) :
-✅ **Solution finale** :
-- Texte complet en un seul appel (plus de troncature)
-- Prosodie **subtile** : pitch ±10Hz, speed ±15%
-- 4 voix adultes (Eloise retirée, trop jeune)
-- Correction orthographique des élisions (`l'imigration` → `l'immigration`)
-- Voix réparties 11F/7M (hash des paramètres pour équilibre)
+| Version TTS | Caractéristiques et avancées | Point d'attention / Bilan |
+|-------------|------------------------------|---------------------------|
+| **TTS v1** | Edge TTS, 5 voix, prosodie large (pitch ±50Hz) | ❌ Tonalités vocales trop enfantines |
+| **TTS v2** | Préparation du texte (élisions, orthographe) et détection du genre<br>Détection du genre (par exemple, « mon mari » oriente vers une voix féminine) | ❌ Troncatures audio dues au découpage par phrases |
+| **TTS v3** | Texte traité en un seul appel, prosodie subtile (pitch ±10Hz, vitesse ±15%), 4 voix adultes<br>Correction orthographique des élisions (transformation de `l'imigration` en `l'immigration`) | ✅ Solution finale validée et répartition équilibrée des voix |
 
 📦 **Livrables** :
-- `src/tts/engine.py` — moteur TTS
-- `src/tts/text_prep.py` — nettoyage + correction
-- `data/audio/demo/` — 18 MP3 + player HTML interactif
+- `src/tts/engine.py` : moteur de synthèse vocale
+- `src/tts/text_prep.py` : nettoyage et corrections textuelles
+- `data/audio/demo/` : ensemble de 18 fichiers MP3 et lecteur HTML interactif
 - `scripts/build_player.py`
 
 ---
 
-### 🟢 Phase 5 : Avatar 2D SVG (Nov 22 soir)
-**Objectif** : MVP visage animé + audio
-
-✅ **Réalisé** :
-- 8 visages SVG (2×4 grid), un par dimension émotionnelle
-- Animations : bouche suit la voix, clignements yeux, sourcils micro-mouvements
-- Click → audio + animation synchronisée
-- Panel texte slide-up avec témoignage
-
-📦 **Livrables** :
-- `data/audio/demo/wall.html` (975 KB avec audio embarqué)
-- `scripts/build_wall.py`
-
----
-
-### 🟢 Phase 6 : Avatar 3D Three.js (Nov 22-23)
+### 🟢 Phase 5 : Avatar 3D Three.js (Nov 12-23)
 **Objectif** : Mur de masques sculpturaux 3D photoréalistes
 
 **v1** (Nov 22) :
 - 8 masques 3D, halos colorés, fond noir immersif
-- ❌ **Problème** : bouche et sourcils **invisibles** (géométrie z incorrecte)
+- ❌ **Ajustement requis** : les éléments de la bouche et des sourcils manquaient de visibilité en raison du positionnement sur l'axe Z
 
 **v2** (Nov 23) :
+
 ✅ **Corrections géométrie** :
-- Tête aplatie (z-scale 0.55 vs 0.85) → features devant la surface
+- Aplatissement du visage (z-scale 0.55 contre 0.85) pour faire ressortir les traits
 - Sourcils épais (0.05 vs 0.035), positionnés à z=0.58
 - Bouche tube élargi (0.025 vs 0.02), z=0.58
 - Yeux cavités creuses + pupilles lumineuses (z=0.62)
 - Fix animation sourcils (baseY stocké, pas de drift)
 
 ✨ **Features** :
-- Click → visage parle, bouche s'anime, halo pulse
+- **Interaction au clic** : le visage s'anime, prononce le texte et le halo lumineux oscille
 - Idle breathing, float léger, rotation subtile
 - Parallax camera (souris)
 - Hover glow
@@ -196,12 +154,12 @@ Chaque témoignage devient un **visage sculptural** qui parle avec sa propre voi
 Exemple : **Urgence**
 ```python
 {
-  'voice_pitch': +0.3,    # Voix plus aiguë
-  'voice_speed': +0.2,    # Parle plus vite
-  'voice_energy': +0.4,   # Volume élevé
-  'face_eyebrows': +0.2,  # Sourcils levés
-  'face_eyes': +0.5,      # Yeux écarquillés
-  'face_gaze': +0.3       # Regard direct
+  'voice_pitch': +0.3,   # Voix plus aiguë
+  'voice_speed': +0.2,   # Parle plus vite
+  'voice_energy': +0.4,  # Volume élevé
+  'face_eyebrows': +0.2, # Sourcils levés
+  'face_eyes': +0.5,     # Yeux écarquillés
+  'face_gaze': +0.3      # Regard direct
 }
 ```
 
@@ -220,8 +178,8 @@ Exemple : **Urgence**
 - [x] Système de contexte Claude (`.claude/` — instructions, context projet, skill update-history)
 
 ### 🔄 En cours
-- [ ] **Notebook 03_tts.ipynb** — génération audio batch (8 707 messages, ~3h)
-- [ ] **Mur 3D étendu** — passer de 8 visages à N visages (grille dynamique)
+- [ ] **Notebook 03_tts.ipynb** : génération audio par lots (8 707 messages, environ 3h)
+- [ ] **Mur 3D étendu** : passage de 8 à N visages via une grille dynamique
 
 ### 🎯 Prochaines étapes (court terme)
 - [ ] Tests unitaires (pytest) pour `emotion_v2`, `text_prep`, `engine`
@@ -230,44 +188,44 @@ Exemple : **Urgence**
 - [ ] Optimisation Three.js (LOD, instancing pour 100+ visages)
 
 ### 🚀 Vision long terme
-- [ ] **Interaction visiteur** — détection présence (OpenCV/MediaPipe)
-  - Visiteur approche → visages "s'éveillent"
-  - Geste main → sélection visage
-- [ ] **Bark TTS** (GPU) — voix ultra-expressives pour installation finale
-- [ ] **Unity/Blender** — avatars 3D photoréalistes (si budget GPU)
-- [ ] **Installation physique** — écran 4m × 1.15m, speakers spatialisés
-- [ ] **Mode exposition** — playlist automatique, rotation messages
-- [ ] **Analytics** — messages les plus écoutés, temps d'écoute moyen
+- [ ] **Interaction visiteur** : détection de présence (OpenCV/MediaPipe)
+  - Approche du visiteur : réveil progressif des visages
+  - Geste de la main : sélection d'un visage spécifique
+- [ ] **Bark TTS** (GPU) : voix ultra-expressives pour l'installation finale
+- [ ] **Unity / Blender** : avatars 3D photoréalistes sous réserve de budget GPU
+- [ ] **Installation physique** : écran de 4 m × 1,15 m et système audio spatialisé
+- [ ] **Mode exposition** : lecture automatique en boucle et rotation des messages
+- [ ] **Analytics** : suivi des contenus les plus consultés et durée moyenne d'écoute
 
 ---
 
 ## 🔬 Évolutions possibles
 
 ### Qualité audio
-- **Bark (Suno AI)** — TTS state-of-the-art, émotions très marquées
+- **Bark (Suno AI)** : synthèse vocale de pointe aux émotions accentuées
   - Prérequis : GPU 8GB+ VRAM
   - Temps : ~8-10h pour 8 707 messages (vs 3h Edge TTS)
   - Qualité : voix presque humaines, intonations naturelles
 
 ### Visuel 3D
-- **Unity HDRP** — rendu photoréaliste temps réel
+- **Unity HDRP** : rendu photoréaliste en temps réel
   - Peau translucide, subsurface scattering
   - Morphing facial procédural (blend shapes)
-- **Blender + Cycles** — pré-rendu vidéo haute qualité
+- **Blender + Cycles** : pré-rendu vidéo à haute définition
   - 1 vidéo par message (lourd : ~10GB pour 8 707 vidéos)
 
 ### Interaction avancée
-- **Kinect / RealSense** — tracking squelette visiteur
+- **Kinect / RealSense** : suivi de la posture et des mouvements du visiteur
   - Visage "suit" du regard
-  - Réaction à la distance (visiteur proche → visage parle plus fort)
-- **Voice recognition** — visiteur peut poser questions
+  - Adaptation selon la distance : l'intensité vocale augmente à l'approche du visiteur
+- **Reconnaissance vocale** : possibilité pour le visiteur de poser des questions directes
   - RAG (Retrieval-Augmented Generation) sur le corpus
-  - LLM répond "en tant que" le message sélectionné
+  - Représentation personnalisée : réponse du modèle de langage en incarnant le témoignage choisi
 
 ### Multi-sensorialité
-- **Haptique** — vibrations sol (graves) pendant témoignages urgents
-- **Lumière ambiante** — couleur pièce change selon émotion dominante
-- **Olfactif** — diffusion subtile (controversé, à tester)
+- **Haptique** : vibrations au sol associées aux messages à forte charge émotionnelle
+- **Ambiance lumineuse** : variation des teintes de la pièce selon l'émotion dominante
+- **Expérience olfactive** : diffusion d'ambiances subtiles (phase de test)
 
 ---
 
@@ -304,25 +262,23 @@ Exemple : **Urgence**
 - CNRS
 - Musée national de l'histoire de l'immigration
 
-**Corpus source** : Plateforme "Comme à la maison" (Singa)  
-→ 20 000 témoignages anonymes de familles proposant d'héberger des réfugiés
+**Corpus source** : Plateforme « Comme à la maison » (Singa), regroupant 20 000 témoignages anonymes de familles proposant l'accueil de réfugiés
 
 ---
 
 ## 🔗 Liens utiles
 
-- **Repo GitHub** : `MaxenceGuinziemba/A_FACE_TO_A_MESSAGE`
+- **Dépôt GitHub** : `MaxenceGuinziemba/A_FACE_TO_A_MESSAGE`
 - **Branch principale** : `data-management` (code + données)
 - **Démos** :
-  - `data/audio/demo/player.html` — player audio 18 cartes
-  - `data/audio/demo/wall.html` — mur 2D SVG animé
-  - `data/audio/demo/wall_3d.html` — mur 3D Three.js
+  - `data/audio/demo/player.html` : lecteur audio à 18 cartes
+  - `data/audio/demo/wall.html` : mur 2D SVG animé
+  - `data/audio/demo/wall_3d.html` : mur 3D Three.js
 - **Docs** :
-  - `README.md` — vue d'ensemble
-  - `SUIVI.md` — journal détaillé jour par jour
-  - `docs/PROJECT.md` — contexte complet
+  - `README.md` : vue d'ensemble du projet
+  - `SUIVI.md` : journal d'avancement au quotidien
+  - `docs/PROJECT.md` : contexte global du projet
 
 ---
 
-*Document créé le 23 novembre 2026 — Dernière mise à jour : 23 novembre 2026*  
-*Résumé historisé du projet A Face to a Message*
+*Document mis à jour le 23 novembre 2026 — Synthèse de suivi du projet A Face to a Message*
