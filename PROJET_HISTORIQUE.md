@@ -217,6 +217,7 @@ Exemple : **Urgence**
 - [x] Avatar 3D Three.js (mur de masques)
 - [x] 18 démos audio + 2 players HTML
 - [x] Audit sécurité (XSS fixé, code mort supprimé)
+- [x] Système de contexte Claude (`.claude/` — instructions, context projet, skill update-history)
 
 ### 🔄 En cours
 - [ ] **Notebook 03_tts.ipynb** — génération audio batch (8 707 messages, ~3h)
@@ -323,4 +324,5 @@ Exemple : **Urgence**
 
 ---
 
-*Document généré le 23 novembre 2026 — Résumé historisé du projet A Face to a Message*
+*Document créé le 23 novembre 2026 — Dernière mise à jour : 23 novembre 2026*  
+*Résumé historisé du projet A Face to a Message*
