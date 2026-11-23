@@ -119,12 +119,29 @@ Chaque témoignage devient un **visage sculptural** qui parle avec sa propre voi
 - Yeux cavités creuses + pupilles lumineuses (z=0.62)
 - Fix animation sourcils (baseY stocké, pas de drift)
 
-✨ **Features** :
+✨ **Features v2** :
 - **Interaction au clic** : le visage s'anime, prononce le texte et le halo lumineux oscille
 - Idle breathing, float léger, rotation subtile
 - Parallax camera (souris)
 - Hover glow
 - Rim lights (contour lumineux)
+
+**v3** (Nov 23) :
+
+✅ **Géométrie humaine** :
+- Sculpture procédurale du crâne : menton effilé, pommettes, arcade sourcilière, arête nasale
+- Yeux réalistes 3 couches : sclère (blanc), iris (couleur émotion), pupille (noire + glow)
+- Paupière supérieure avec ombre portée
+- Sourcils courbés (ExtrudeGeometry + bevel)
+- Nez anatomique (bridge + narines)
+- Lèvres supérieure et inférieure distinctes (au lieu d'un tube unique)
+- Clignement des yeux (~4s par cycle, déphasé par visage)
+
+✨ **Features v3** :
+- **Yeux suiveurs** : toutes les pupilles/iris suivent le curseur en temps réel (conversion mouse → world coords via unproject)
+- **Comportement idle réactif** : quand un visage parle, les autres tournent la tête et les yeux vers le speaker, avec halos atténués
+- **Transitions douces** : toutes les animations utilisent lerp (pas de sauts brusques)
+- Éclairage enrichi : key light + fill light directionnels
 
 📦 **Livrables** :
 - `data/audio/demo/wall_3d.html` (978 KB)
@@ -172,7 +189,7 @@ Exemple : **Urgence**
 - [x] Pipeline émotions français fiable (v2)
 - [x] TTS 4 voix françaises + prosodie subtile (v3)
 - [x] Avatar 2D SVG animé (MVP)
-- [x] Avatar 3D Three.js (mur de masques)
+- [x] Avatar 3D Three.js (mur de masques sculpturaux, yeux suiveurs, idle réactif)
 - [x] 18 démos audio + 2 players HTML
 - [x] Audit sécurité (XSS fixé, code mort supprimé)
 - [x] Système de contexte Claude (`.claude/` — instructions, context projet, skill update-history)
@@ -184,8 +201,8 @@ Exemple : **Urgence**
 ### 🎯 Prochaines étapes (court terme)
 - [ ] Tests unitaires (pytest) pour `emotion_v2`, `text_prep`, `engine`
 - [ ] Synchronisation labiale précise (phonèmes → visèmes)
-- [ ] Variation des masques 3D (géométrie procédurale par message)
 - [ ] Optimisation Three.js (LOD, instancing pour 100+ visages)
+- [ ] Tracking visiteur via caméra (remplacement souris → MediaPipe/OpenCV)
 
 ### 🚀 Vision long terme
 - [ ] **Interaction visiteur** : détection de présence (OpenCV/MediaPipe)
@@ -281,4 +298,4 @@ Exemple : **Urgence**
 
 ---
 
-*Document mis à jour le 23 novembre 2026 — Synthèse de suivi du projet A Face to a Message*
+*Document mis à jour le 23 novembre 2026 (v3 avatars) — Synthèse de suivi du projet A Face to a Message*
