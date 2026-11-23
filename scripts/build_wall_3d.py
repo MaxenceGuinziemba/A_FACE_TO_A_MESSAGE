@@ -16,6 +16,7 @@ from src.analysis.emotion_v2 import score_dimensions_v2, compute_avatar_params_v
 import html as html_mod
 
 DEMO_DIR = Path('data/audio/demo')
+MODEL_PATH = Path('data/models/facecap.glb')
 OUT_PATH = DEMO_DIR / 'wall_3d.html'
 
 DIM_META = {
@@ -74,6 +75,9 @@ for dim in DIM_ORDER:
 
 faces_json = json.dumps(faces_data, ensure_ascii=False)
 audio_html = '\n'.join(audio_elements)
+
+with open(MODEL_PATH, 'rb') as mf:
+    model_b64 = base64.b64encode(mf.read()).decode('utf-8')
 
 html_content = f'''<!DOCTYPE html>
 <html lang="fr">
@@ -216,20 +220,13 @@ canvas {{ display: block; }}
 
 {audio_html}
 
-<script type="importmap">
-{{
-  "imports": {{
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-  }}
-}}
-</script>
-<script type="module">
-import * as THREE from 'three';
-import {{ GLTFLoader }} from 'three/addons/loaders/GLTFLoader.js';
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/GLTFLoader.js"></script>
+<script>
+"use strict";
 
 const FACES = {faces_json};
-const MODEL_URL = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r160/examples/models/gltf/facecap.glb';
+const MODEL_B64 = "{model_b64}";
 
 // ─── Scene ───
 const scene = new THREE.Scene();
@@ -344,15 +341,24 @@ function applyEmotion(mesh, fp, restingInfluences) {{
   for (let i = 0; i < r.length; i++) restingInfluences[i] = r[i];
 }}
 
-// ─── Load model and build wall ───
-const loader = new GLTFLoader();
+// ─── Decode base64 GLB model ───
+function b64ToArrayBuffer(b64) {{
+  const bin = atob(b64);
+  const buf = new ArrayBuffer(bin.length);
+  const view = new Uint8Array(buf);
+  for (let i = 0; i < bin.length; i++) view[i] = bin.charCodeAt(i);
+  return buf;
+}}
+
+const loader = new THREE.GLTFLoader();
 
 const loadingDiv = document.createElement('div');
 loadingDiv.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,0.3);font:16px sans-serif;z-index:100';
 loadingDiv.textContent = 'Chargement des visages...';
 document.body.appendChild(loadingDiv);
 
-loader.load(MODEL_URL, (gltf) => {{
+const modelBuffer = b64ToArrayBuffer(MODEL_B64);
+loader.parse(modelBuffer, '', (gltf) => {{
   loadingDiv.remove();
 
   const templateScene = gltf.scene;
@@ -653,12 +659,6 @@ loader.load(MODEL_URL, (gltf) => {{
   }}
 
   animate();
-}},
-(progress) => {{
-  if (progress.total) {{
-    const pct = Math.round(progress.loaded / progress.total * 100);
-    loadingDiv.textContent = 'Chargement... ' + pct + '%';
-  }}
 }},
 (error) => {{
   loadingDiv.textContent = 'Erreur de chargement du modèle 3D';
