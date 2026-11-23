@@ -22,7 +22,7 @@ Chaque témoignage devient un **visage sculptural** qui parle avec sa propre voi
 |-----------|----------------------|
 | **Core NLP & Emotion** | **XLM-RoBERTa** (Hugging Face) : validation multilingue zero-shot<br>**Lexique contextuel français v2** : 8 dimensions (cf au dessus)<br>**spaCy** : tokenisation et lemmatisation |
 | **Text-to-Speech** | **Edge TTS** (Microsoft) : 4 voix adultes françaises (Vivienne, Denise, Remy, Henri)<br>**pyspellchecker** : correction orthographique<br>Prosodie SSML : pitch ±10Hz, speed ±15%, volume ±15% |
-| **Avatar & Visuel** | **Three.js r128** : rendu 3D temps réel (WebGL)<br>**SVG animé** : version 2D légère (MVP) |
+| **Avatar & Visuel** | **Three.js r160** (ES modules) : rendu 3D temps réel (WebGL)<br>**GLTFLoader** + modèle **FaceCap** (52 ARKit morph targets)<br>**Web Audio API** : lip sync amplitude en temps réel<br>**SVG animé** : version 2D légère (MVP) |
 | **Data & Infra** | **pandas, numpy** : traitement du corpus de 8 707 messages<br>**Jupyter** : notebooks interactifs |
 | **Perspectives** | **Bark (Suno AI)** : synthèse vocale ultra-expressive (nécessite un GPU)<br>**Unity / Blender** : création d'avatars 3D photoréalistes pour l'installation finale<br>**OpenCV / MediaPipe** : détection de la présence des visiteurs |
 
@@ -143,6 +143,32 @@ Chaque témoignage devient un **visage sculptural** qui parle avec sa propre voi
 - **Transitions douces** : toutes les animations utilisent lerp (pas de sauts brusques)
 - Éclairage enrichi : key light + fill light directionnels
 
+**v4** (Nov 23) :
+
+✅ **Migration vers modèle GLB réaliste** :
+- Remplacement de TOUTE la géométrie procédurale par le modèle **FaceCap** (Three.js, 325 KB)
+- **52 morph targets ARKit** : expressions faciales complètes (sourcils, bouche, yeux, joues, nez)
+- Three.js upgradé de **r128 → r160** avec ES modules + importmap
+- GLTFLoader pour chargement asynchrone du modèle depuis CDN
+- 8 clones du modèle, différenciés par couleur émissive + expression de repos
+
+✨ **Lip sync audio** :
+- **Web Audio API** : `AnalyserNode` capte l'amplitude vocale en temps réel
+- Mapping amplitude → `jawOpen` + `mouthOpen` + `mouthFunnel` + micro-expressions
+- Sourcils, joues et nez réagissent aussi pendant la parole
+- `createMediaElementSource()` connecte les `<audio>` base64 existants
+
+✨ **Eye gaze via morph targets** :
+- 8 morph targets directionnels (`eyeLookIn/Out/Up/Down_L/R`)
+- Yeux suivent la souris (idle) ou le speaker (quand un visage parle)
+- Rotation des globes oculaires (objets `eyeLeft`/`eyeRight`) en complément
+
+✨ **Expression émotionnelle par visage** :
+- Mapping `face_eyebrows` → `browOuterUp` / `browDown` + `browInnerUp`
+- Mapping `face_mouth` → `mouthSmile` / `mouthFrown`
+- Mapping `face_eyes` → `eyeSquint` / `eyeWide`
+- Micro-expressions idle (sourire subtil oscillant)
+
 📦 **Livrables** :
 - `data/audio/demo/wall_3d.html` (978 KB)
 - `scripts/build_wall_3d.py`
@@ -189,7 +215,7 @@ Exemple : **Urgence**
 - [x] Pipeline émotions français fiable (v2)
 - [x] TTS 4 voix françaises + prosodie subtile (v3)
 - [x] Avatar 2D SVG animé (MVP)
-- [x] Avatar 3D Three.js (mur de masques sculpturaux, yeux suiveurs, idle réactif)
+- [x] Avatar 3D Three.js (modèle GLB réaliste, lip sync, 52 morph targets ARKit)
 - [x] 18 démos audio + 2 players HTML
 - [x] Audit sécurité (XSS fixé, code mort supprimé)
 - [x] Système de contexte Claude (`.claude/` — instructions, context projet, skill update-history)
@@ -200,7 +226,8 @@ Exemple : **Urgence**
 
 ### 🎯 Prochaines étapes (court terme)
 - [ ] Tests unitaires (pytest) pour `emotion_v2`, `text_prep`, `engine`
-- [ ] Synchronisation labiale précise (phonèmes → visèmes)
+- [ ] Lip sync avancé : intégration `wawa-lipsync` (15 visèmes Oculus au lieu de l'amplitude seule)
+- [ ] Modèles GLB variés (8 visages distincts via MakeHuman/MPFB ou Sketchfab)
 - [ ] Optimisation Three.js (LOD, instancing pour 100+ visages)
 - [ ] Tracking visiteur via caméra (remplacement souris → MediaPipe/OpenCV)
 
@@ -298,4 +325,4 @@ Exemple : **Urgence**
 
 ---
 
-*Document mis à jour le 23 novembre 2026 (v3 avatars) — Synthèse de suivi du projet A Face to a Message*
+*Document mis à jour le 23 novembre 2026 (v4 GLB + lip sync) — Synthèse de suivi du projet A Face to a Message*

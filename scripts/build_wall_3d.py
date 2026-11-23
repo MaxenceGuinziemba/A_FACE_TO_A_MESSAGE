@@ -1,7 +1,8 @@
-"""Generate the Three.js 3D face wall — 8 sculptural masks with embedded audio.
+"""Generate the Three.js 3D face wall — 8 realistic faces with lip sync.
 
-Style: abstract/sculptural ceramic masks on deep black, colored light halos.
-Grid: 2 rows × 4 columns. Click a face to hear the testimony + animate.
+Uses a GLB model (FaceCap) with 52 ARKit morph targets for realistic
+facial animation, lip sync via Web Audio API, and eye gaze tracking.
+Grid: 2 rows × 4 columns. Click a face to hear the testimony.
 """
 
 import json
@@ -215,11 +216,20 @@ canvas {{ display: block; }}
 
 {audio_html}
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-"use strict";
+<script type="importmap">
+{{
+  "imports": {{
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }}
+}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import {{ GLTFLoader }} from 'three/addons/loaders/GLTFLoader.js';
 
 const FACES = {faces_json};
+const MODEL_URL = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r160/examples/models/gltf/facecap.glb';
 
 // ─── Scene ───
 const scene = new THREE.Scene();
@@ -231,510 +241,429 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setClearColor(0x000000, 1);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.2;
+renderer.toneMappingExposure = 1.4;
 document.body.appendChild(renderer.domElement);
 
 // ─── Lighting ───
-scene.add(new THREE.AmbientLight(0x1a1a2e, 0.6));
-const keyLight = new THREE.DirectionalLight(0xddeeff, 0.5);
+scene.add(new THREE.AmbientLight(0x2a2a3e, 0.8));
+const keyLight = new THREE.DirectionalLight(0xddeeff, 0.7);
 keyLight.position.set(2, 4, 6);
 scene.add(keyLight);
-const fillLight = new THREE.DirectionalLight(0x334455, 0.25);
+const fillLight = new THREE.DirectionalLight(0x445566, 0.3);
 fillLight.position.set(-3, 1, 4);
 scene.add(fillLight);
+const rimLight = new THREE.DirectionalLight(0x667788, 0.2);
+rimLight.position.set(0, -2, -3);
+scene.add(rimLight);
 
 // ─── Layout ───
-const faceGroups = [];
-const faceLights = [];
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2(0, 0);
-const mouseWorld = new THREE.Vector3(0, 0, 5);
-const hoverTargets = [];
-
 const COLS = 4, ROWS = 2;
 const SPACING_X = 3.2, SPACING_Y = 3.6;
 const OFFSET_X = -(COLS - 1) * SPACING_X / 2;
 const OFFSET_Y = (ROWS - 1) * SPACING_Y / 2 - 0.3;
 
-function hexColor(hex) {{ return new THREE.Color(hex); }}
+const faceGroups = [];
+const faceLights = [];
+const faceMeshes = [];
+const hoverTargets = [];
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2(0, 0);
+const mouseWorld = new THREE.Vector3(0, 0, 0);
 
-// ─── Sculpt a human head from sphere ───
-function sculptHead(geo) {{
-  const pos = geo.attributes.position;
-  const v = new THREE.Vector3();
-  for (let i = 0; i < pos.count; i++) {{
-    v.set(pos.getX(i), pos.getY(i), pos.getZ(i));
-    const nx = v.x, ny = v.y, nz = v.z;
-    const r = v.length();
-    const theta = Math.atan2(ny, Math.sqrt(nx*nx + nz*nz));
-    const phi = Math.atan2(nx, nz);
-
-    // Narrow the chin
-    if (ny < -0.3) {{
-      const chinFactor = 1.0 - Math.pow(Math.max(0, (-ny - 0.3) / 0.7), 1.3) * 0.35;
-      v.x *= chinFactor;
-      v.z *= (1.0 - Math.pow(Math.max(0, (-ny - 0.3) / 0.7), 1.0) * 0.15);
-    }}
-
-    // Widen cheekbones
-    if (ny > -0.15 && ny < 0.15 && Math.abs(nx) > 0.3) {{
-      const cheekPush = Math.sin((ny + 0.15) / 0.3 * Math.PI) * 0.06;
-      v.x += Math.sign(nx) * cheekPush;
-    }}
-
-    // Indent eye sockets
-    const eyeY = 0.2;
-    [-1, 1].forEach(side => {{
-      const eyeX = side * 0.35;
-      const dx = nx - eyeX, dy = ny - eyeY;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < 0.2 && nz > 0) {{
-        const indent = (1 - dist / 0.2) * 0.08;
-        v.z -= indent;
-      }}
-    }});
-
-    // Nose bridge bump
-    if (Math.abs(nx) < 0.08 && ny > -0.1 && ny < 0.3 && nz > 0) {{
-      const nosePush = (1 - Math.abs(nx) / 0.08) * 0.07 *
-                       Math.sin((ny + 0.1) / 0.4 * Math.PI);
-      v.z += nosePush;
-    }}
-
-    // Brow ridge
-    if (ny > 0.25 && ny < 0.4 && nz > 0) {{
-      const browPush = Math.sin((ny - 0.25) / 0.15 * Math.PI) * 0.04;
-      v.z += browPush;
-    }}
-
-    // Slight forehead roundness
-    if (ny > 0.5 && nz > 0) {{
-      v.z += (ny - 0.5) * 0.03;
-    }}
-
-    pos.setXYZ(i, v.x, v.y, v.z);
-  }}
-  pos.needsUpdate = true;
-  geo.computeVertexNormals();
-}}
-
-// ─── Build face ───
-function createFace(data, index) {{
-  const col = index % COLS;
-  const row = Math.floor(index / COLS);
-  const x = OFFSET_X + col * SPACING_X;
-  const y = OFFSET_Y - row * SPACING_Y;
-
-  const group = new THREE.Group();
-  group.position.set(x, y, 0);
-  group.userData = {{ dim: data.dim, index, data, baseX: x, baseY: y }};
-
-  const color = hexColor(data.color);
-  const fp = data.face;
-
-  // ── Head ──
-  const skinMat = new THREE.MeshStandardMaterial({{
-    color: 0x1c1c22,
-    roughness: 0.55,
-    metalness: 0.08,
-    emissive: color,
-    emissiveIntensity: 0.04,
-  }});
-  const headGeo = new THREE.SphereGeometry(1.1, 64, 64);
-  headGeo.scale(1, 1.25, 0.65);
-  sculptHead(headGeo);
-  const head = new THREE.Mesh(headGeo, skinMat.clone());
-  group.add(head);
-  hoverTargets.push(head);
-  head.userData = {{ dim: data.dim, index }};
-
-  // ── Eyes (sclera + iris + pupil) ──
-  const eyeBaseY = 0.22;
-  const eyeSpacing = 0.33;
-
-  [-1, 1].forEach(side => {{
-    // Sclera
-    const scleraGeo = new THREE.SphereGeometry(0.11, 24, 16);
-    scleraGeo.scale(1.2, 0.7 + fp.eyes * 0.4, 0.5);
-    const scleraMat = new THREE.MeshStandardMaterial({{
-      color: 0xf0f0f0, roughness: 0.3, metalness: 0,
-    }});
-    const sclera = new THREE.Mesh(scleraGeo, scleraMat);
-    sclera.position.set(side * eyeSpacing, eyeBaseY, 0.58);
-    group.add(sclera);
-
-    // Iris
-    const irisGeo = new THREE.SphereGeometry(0.055, 16, 16);
-    const irisMat = new THREE.MeshStandardMaterial({{
-      color: color.clone().multiplyScalar(0.7),
-      emissive: color,
-      emissiveIntensity: 0.4,
-      roughness: 0.2,
-    }});
-    const iris = new THREE.Mesh(irisGeo, irisMat);
-    iris.position.set(side * eyeSpacing, eyeBaseY, 0.64);
-    iris.userData.type = 'iris';
-    iris.userData.baseX = side * eyeSpacing;
-    iris.userData.baseY = eyeBaseY;
-    iris.userData.side = side;
-    group.add(iris);
-
-    // Pupil
-    const pupilGeo = new THREE.SphereGeometry(0.025, 12, 12);
-    const pupilMat = new THREE.MeshStandardMaterial({{
-      color: 0x000000, emissive: color, emissiveIntensity: 0.15,
-      roughness: 0.1,
-    }});
-    const pupil = new THREE.Mesh(pupilGeo, pupilMat);
-    pupil.position.set(side * eyeSpacing, eyeBaseY, 0.67);
-    pupil.userData.type = 'pupil';
-    pupil.userData.baseX = side * eyeSpacing;
-    pupil.userData.baseY = eyeBaseY;
-    pupil.userData.side = side;
-    group.add(pupil);
-
-    // Upper eyelid (subtle shadow)
-    const lidGeo = new THREE.PlaneGeometry(0.16, 0.04);
-    const lidMat = new THREE.MeshStandardMaterial({{
-      color: 0x111118, transparent: true, opacity: 0.5,
-      roughness: 1, side: THREE.DoubleSide,
-    }});
-    const lid = new THREE.Mesh(lidGeo, lidMat);
-    lid.position.set(side * eyeSpacing, eyeBaseY + 0.08, 0.63);
-    lid.rotation.x = 0.3;
-    group.add(lid);
-  }});
-
-  // ── Eyebrows ──
-  const browMat = new THREE.MeshStandardMaterial({{
-    color: 0x151518, emissive: color, emissiveIntensity: 0.12, roughness: 0.8,
-  }});
-  const browBaseY = 0.42 + fp.eyebrows * 0.1;
-
-  [-1, 1].forEach(side => {{
-    // Rounded brow shape
-    const browShape = new THREE.Shape();
-    browShape.moveTo(-0.14, 0);
-    browShape.quadraticCurveTo(-0.07, 0.025, 0, 0.02);
-    browShape.quadraticCurveTo(0.07, 0.015, 0.14, -0.005);
-    browShape.quadraticCurveTo(0.07, -0.015, 0, -0.01);
-    browShape.quadraticCurveTo(-0.07, -0.01, -0.14, 0);
-    const browGeo = new THREE.ExtrudeGeometry(browShape, {{
-      depth: 0.06, bevelEnabled: true, bevelThickness: 0.01,
-      bevelSize: 0.01, bevelSegments: 3,
-    }});
-    const brow = new THREE.Mesh(browGeo, browMat.clone());
-    brow.position.set(side * eyeSpacing, browBaseY, 0.56);
-    brow.rotation.z = side * (-fp.eyebrows * 0.2);
-    if (side < 0) brow.scale.x = -1;
-    brow.userData.type = 'brow';
-    brow.userData.baseY = browBaseY;
-    group.add(brow);
-  }});
-
-  // ── Nose ──
-  // Bridge
-  const bridgePts = [
-    new THREE.Vector3(0, 0.15, 0.62),
-    new THREE.Vector3(0, 0.05, 0.68),
-    new THREE.Vector3(0, -0.05, 0.72),
-    new THREE.Vector3(0, -0.1, 0.68),
-  ];
-  const bridgeCurve = new THREE.CatmullRomCurve3(bridgePts);
-  const bridgeGeo = new THREE.TubeGeometry(bridgeCurve, 12, 0.025, 8, false);
-  const noseMat = skinMat.clone();
-  noseMat.emissiveIntensity = 0.02;
-  const bridge = new THREE.Mesh(bridgeGeo, noseMat);
-  group.add(bridge);
-
-  // Nostrils
-  [-1, 1].forEach(side => {{
-    const nostrilGeo = new THREE.SphereGeometry(0.025, 8, 8);
-    const nostril = new THREE.Mesh(nostrilGeo, noseMat.clone());
-    nostril.position.set(side * 0.03, -0.12, 0.67);
-    group.add(nostril);
-  }});
-
-  // ── Lips ──
-  const mouthCurve = fp.mouth;
-  const lipColor = new THREE.MeshStandardMaterial({{
-    color: 0x2a1a1a,
-    emissive: color,
-    emissiveIntensity: 0.15,
-    roughness: 0.4,
-  }});
-
-  // Upper lip
-  function buildLipGeo(yOffset, curve, thickness) {{
-    const pts = [];
-    for (let i = 0; i <= 24; i++) {{
-      const s = (i / 24 - 0.5) * 2;
-      const lx = s * 0.22;
-      const ly = yOffset + curve * 0.08 * (1 - s * s);
-      const lz = 0.62 - Math.abs(s) * 0.04;
-      pts.push(new THREE.Vector3(lx, ly, lz));
-    }}
-    const path = new THREE.CatmullRomCurve3(pts);
-    return new THREE.TubeGeometry(path, 24, thickness, 8, false);
-  }}
-
-  const upperLip = new THREE.Mesh(buildLipGeo(-0.28, mouthCurve * 0.5, 0.018), lipColor.clone());
-  upperLip.userData.type = 'upperLip';
-  upperLip.userData.baseCurve = mouthCurve;
-  group.add(upperLip);
-
-  const lowerLip = new THREE.Mesh(buildLipGeo(-0.32, mouthCurve * 0.3, 0.022), lipColor.clone());
-  lowerLip.userData.type = 'lowerLip';
-  lowerLip.userData.baseCurve = mouthCurve;
-  group.add(lowerLip);
-
-  // ── Halo + rim lights ──
-  const haloLight = new THREE.PointLight(color, 0.5, 6);
-  haloLight.position.set(x, y, -1.8);
-  scene.add(haloLight);
-  faceLights.push(haloLight);
-
-  const rimLight = new THREE.PointLight(color, 0.15, 3);
-  rimLight.position.set(x, y + 0.5, -0.8);
-  scene.add(rimLight);
-
-  scene.add(group);
-  faceGroups.push(group);
-}}
-
-FACES.forEach((f, i) => createFace(f, i));
-
-// ─── Interaction ───
-let currentDim = null;
-let activeGroup = null;
-let activeIndex = -1;
-
-function onMouseMove(e) {{
-  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-
-  // Project mouse into world space on z=0 plane for eye tracking
-  const v = new THREE.Vector3(mouse.x, mouse.y, 0.5);
-  v.unproject(camera);
-  const dir = v.sub(camera.position).normalize();
-  const dist = -camera.position.z / dir.z;
-  mouseWorld.copy(camera.position).add(dir.multiplyScalar(dist));
-
-  // Subtle camera parallax
-  camera.position.x = mouse.x * 0.25;
-  camera.position.y = mouse.y * 0.15;
-  camera.lookAt(0, 0, 0);
-}}
-
-function onClick(e) {{
-  raycaster.setFromCamera(mouse, camera);
-  const hits = raycaster.intersectObjects(hoverTargets);
-  if (hits.length > 0) {{
-    const dim = hits[0].object.userData.dim;
-    const idx = hits[0].object.userData.index;
-    if (currentDim === dim) stopAll();
-    else playFace(FACES[idx], idx);
-  }}
-}}
-
-function playFace(data, idx) {{
-  stopAll();
-  currentDim = data.dim;
-  activeGroup = faceGroups[idx];
-  activeIndex = idx;
-
-  const panel = document.getElementById('textPanel');
-  document.getElementById('panelBadge').style.background = data.color;
-  document.getElementById('panelBadge').textContent = data.label;
-  document.getElementById('panelText').innerHTML = '\\u275D ' + data.text + ' \\u275E';
-  document.getElementById('panelMeta').textContent = 'Voix : ' + data.voice;
-  panel.classList.add('visible');
-  document.getElementById('hint').style.opacity = '0';
-
-  faceLights[idx].intensity = 1.5;
-
-  const audio = document.getElementById('audio-' + data.dim);
-  audio.currentTime = 0;
-  audio.play();
-  audio.onended = () => stopAll();
-}}
-
-function stopAll() {{
-  if (currentDim) {{
-    const audio = document.getElementById('audio-' + currentDim);
-    if (audio) {{ audio.pause(); audio.currentTime = 0; }}
-  }}
-  document.getElementById('textPanel').classList.remove('visible');
-  document.getElementById('hint').style.opacity = '1';
-  faceLights.forEach(l => {{ l.intensity = 0.5; }});
-  currentDim = null;
-  activeGroup = null;
-  activeIndex = -1;
-}}
-
-window.addEventListener('mousemove', onMouseMove);
-window.addEventListener('click', onClick);
-window.addEventListener('resize', () => {{
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}});
-
-// ─── Smooth value tracking ───
 function lerp(a, b, t) {{ return a + (b - a) * t; }}
 
-// ─── Animation ───
-const clock = new THREE.Clock();
+// ─── Web Audio lip sync ───
+let audioCtx = null;
+let analyser = null;
+let freqData = null;
+let activeSource = null;
 
-function animate() {{
-  requestAnimationFrame(animate);
-  const t = clock.getElapsedTime();
-  const dt = Math.min(clock.getDelta(), 0.05);
+function initAudio() {{
+  if (audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 256;
+  analyser.smoothingTimeConstant = 0.6;
+  freqData = new Uint8Array(analyser.frequencyBinCount);
+  analyser.connect(audioCtx.destination);
+}}
 
-  // Speaker world position (for idle faces to look at)
-  let speakerPos = null;
-  if (activeGroup) {{
-    speakerPos = new THREE.Vector3();
-    activeGroup.getWorldPosition(speakerPos);
+function connectAudio(audioEl) {{
+  initAudio();
+  if (activeSource) {{
+    try {{ activeSource.disconnect(); }} catch(e) {{}}
+  }}
+  if (!audioEl._sourceNode) {{
+    audioEl._sourceNode = audioCtx.createMediaElementSource(audioEl);
+  }}
+  audioEl._sourceNode.connect(analyser);
+  activeSource = audioEl._sourceNode;
+}}
+
+function getAmplitude() {{
+  if (!analyser) return 0;
+  analyser.getByteFrequencyData(freqData);
+  let sum = 0;
+  const lo = 2, hi = 24;
+  for (let i = lo; i < hi; i++) sum += freqData[i];
+  return Math.min(1.0, (sum / ((hi - lo) * 255)) * 3.0);
+}}
+
+// ─── Apply emotion to morph targets ───
+function applyEmotion(mesh, fp, restingInfluences) {{
+  const d = mesh.morphTargetDictionary;
+  if (!d) return;
+
+  const r = new Float32Array(mesh.morphTargetInfluences.length);
+
+  if (fp.eyebrows > 0) {{
+    if (d['browOuterUp_L'] !== undefined) r[d['browOuterUp_L']] = fp.eyebrows * 0.6;
+    if (d['browOuterUp_R'] !== undefined) r[d['browOuterUp_R']] = fp.eyebrows * 0.6;
+  }} else {{
+    if (d['browDown_L'] !== undefined) r[d['browDown_L']] = -fp.eyebrows * 0.5;
+    if (d['browDown_R'] !== undefined) r[d['browDown_R']] = -fp.eyebrows * 0.5;
+    if (d['browInnerUp'] !== undefined) r[d['browInnerUp']] = -fp.eyebrows * 0.3;
   }}
 
-  faceGroups.forEach((group, i) => {{
-    const isActive = i === activeIndex;
-    const fp = group.userData.data.face;
-    const baseX = group.userData.baseX;
-    const baseY = group.userData.baseY;
+  if (fp.mouth > 0) {{
+    if (d['mouthSmile_L'] !== undefined) r[d['mouthSmile_L']] = fp.mouth * 0.5;
+    if (d['mouthSmile_R'] !== undefined) r[d['mouthSmile_R']] = fp.mouth * 0.5;
+  }} else {{
+    if (d['mouthFrown_L'] !== undefined) r[d['mouthFrown_L']] = -fp.mouth * 0.5;
+    if (d['mouthFrown_R'] !== undefined) r[d['mouthFrown_R']] = -fp.mouth * 0.5;
+  }}
 
-    // ── Breathing (all faces) ──
-    const breathe = Math.sin(t * 0.8 + i * 0.7) * 0.012;
-    group.scale.setScalar(1 + breathe);
+  if (fp.eyes < 0.4) {{
+    if (d['eyeSquint_L'] !== undefined) r[d['eyeSquint_L']] = (0.4 - fp.eyes) * 1.5;
+    if (d['eyeSquint_R'] !== undefined) r[d['eyeSquint_R']] = (0.4 - fp.eyes) * 1.5;
+  }} else if (fp.eyes > 0.7) {{
+    if (d['eyeWide_L'] !== undefined) r[d['eyeWide_L']] = (fp.eyes - 0.7) * 2.0;
+    if (d['eyeWide_R'] !== undefined) r[d['eyeWide_R']] = (fp.eyes - 0.7) * 2.0;
+  }}
 
-    // ── Float ──
-    group.position.y = baseY + Math.sin(t * 0.5 + i * 1.1) * 0.03;
+  for (let i = 0; i < r.length; i++) restingInfluences[i] = r[i];
+}}
 
-    // ── Eye target: mouse (always) or speaker (idle while someone talks) ──
-    let eyeTarget = mouseWorld.clone();
-    let lookStrength = 0.6;
+// ─── Load model and build wall ───
+const loader = new GLTFLoader();
 
-    if (!isActive && speakerPos) {{
-      // Idle faces look toward the speaker
-      eyeTarget = speakerPos.clone();
-      lookStrength = 0.8;
-    }}
+const loadingDiv = document.createElement('div');
+loadingDiv.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,0.3);font:16px sans-serif;z-index:100';
+loadingDiv.textContent = 'Chargement des visages...';
+document.body.appendChild(loadingDiv);
 
-    // Convert eye target to group-local coordinates
-    const localTarget = group.worldToLocal(eyeTarget.clone());
+loader.load(MODEL_URL, (gltf) => {{
+  loadingDiv.remove();
 
-    group.children.forEach(child => {{
-      // ── Eyes follow target ──
-      if (child.userData.type === 'iris' || child.userData.type === 'pupil') {{
-        const bx = child.userData.baseX;
-        const by = child.userData.baseY;
-        const dx = (localTarget.x - bx) * 0.03 * lookStrength;
-        const dy = (localTarget.y - by) * 0.03 * lookStrength;
-        const maxShift = 0.035;
-        const cx = Math.max(-maxShift, Math.min(maxShift, dx));
-        const cy = Math.max(-maxShift, Math.min(maxShift, dy));
-        child.position.x = lerp(child.position.x, bx + cx, 0.08);
-        child.position.y = lerp(child.position.y, by + cy, 0.08);
+  const templateScene = gltf.scene;
+  templateScene.updateMatrixWorld(true);
+
+  FACES.forEach((data, index) => {{
+    const col = index % COLS;
+    const row = Math.floor(index / COLS);
+    const x = OFFSET_X + col * SPACING_X;
+    const y = OFFSET_Y - row * SPACING_Y;
+
+    const group = new THREE.Group();
+    group.position.set(x, y, 0);
+    group.userData = {{ dim: data.dim, index, data, baseX: x, baseY: y }};
+
+    const color = new THREE.Color(data.color);
+
+    const clone = templateScene.clone(true);
+    clone.scale.setScalar(1.4);
+    clone.rotation.x = 0.05;
+
+    const meshInfo = {{ head: null, teeth: null, eyes: [], restingInfluences: null }};
+
+    clone.traverse((child) => {{
+      if (child.isMesh) {{
+        child.material = child.material.clone();
+        child.material.emissive = color.clone();
+        child.material.emissiveIntensity = 0.03;
+
+        if (child.morphTargetDictionary) {{
+          meshInfo.head = child;
+          meshInfo.restingInfluences = new Float32Array(child.morphTargetInfluences.length);
+          applyEmotion(child, data.face, meshInfo.restingInfluences);
+          for (let i = 0; i < meshInfo.restingInfluences.length; i++) {{
+            child.morphTargetInfluences[i] = meshInfo.restingInfluences[i];
+          }}
+        }}
+
+        const name = (child.name || '').toLowerCase();
+        if (name.includes('teeth') || name.includes('tooth')) {{
+          meshInfo.teeth = child;
+        }}
       }}
 
-      // ── Active face: talking ──
-      if (isActive) {{
-        if (child.userData.type === 'upperLip' || child.userData.type === 'lowerLip') {{
-          const baseCurve = child.userData.baseCurve;
-          const isUpper = child.userData.type === 'upperLip';
-          const talk = Math.sin(t * 12) * 0.4 + Math.sin(t * 17) * 0.2 + Math.sin(t * 7) * 0.25;
-          const yOff = isUpper ? -0.28 : (-0.32 - Math.abs(talk) * 0.025);
-          const curve = baseCurve * (isUpper ? 0.5 : 0.3) + talk * 0.2;
-          const thickness = (isUpper ? 0.018 : 0.022) + Math.abs(talk) * 0.005;
-          const pts = [];
-          for (let j = 0; j <= 24; j++) {{
-            const s = (j / 24 - 0.5) * 2;
-            pts.push(new THREE.Vector3(
-              s * 0.22,
-              yOff + curve * 0.08 * (1 - s * s),
-              0.62 - Math.abs(s) * 0.04
-            ));
-          }}
-          const path = new THREE.CatmullRomCurve3(pts);
-          const newGeo = new THREE.TubeGeometry(path, 24, thickness, 8, false);
-          child.geometry.dispose();
-          child.geometry = newGeo;
-        }}
-
-        if (child.userData.type === 'pupil') {{
-          child.scale.setScalar(1 + Math.sin(t * 3) * 0.1);
-        }}
-
-        if (child.userData.type === 'brow') {{
-          const shift = Math.sin(t * 2.5 + (child.position.x > 0 ? 0.5 : 0)) * 0.02;
-          child.position.y = lerp(child.position.y, child.userData.baseY + shift, 0.1);
-        }}
-      }} else {{
-        // ── Idle face ──
-        if (child.userData.type === 'brow') {{
-          child.position.y = lerp(child.position.y, child.userData.baseY, 0.05);
-        }}
+      if (child.name === 'eyeLeft' || child.name === 'eyeRight') {{
+        meshInfo.eyes.push(child);
       }}
     }});
 
-    // ── Head rotation ──
-    if (isActive) {{
-      // Active: slight animated movement
-      group.rotation.x = lerp(group.rotation.x, Math.sin(t * 0.7) * 0.04, 0.05);
-      group.rotation.y = lerp(group.rotation.y, Math.sin(t * 0.5) * 0.03, 0.05);
-      faceLights[i].intensity = 1.3 + Math.sin(t * 2) * 0.4;
-    }} else if (speakerPos) {{
-      // Idle while someone speaks: turn slightly toward speaker
-      const dx = speakerPos.x - baseX;
-      const dy = speakerPos.y - baseY;
-      const targetRotY = Math.atan2(dx, 10) * 0.6;
-      const targetRotX = Math.atan2(-dy, 10) * 0.3;
-      group.rotation.y = lerp(group.rotation.y, targetRotY, 0.03);
-      group.rotation.x = lerp(group.rotation.x, targetRotX, 0.03);
-      // Dim idle faces slightly
-      faceLights[i].intensity = lerp(faceLights[i].intensity, 0.25, 0.03);
-    }} else {{
-      // No one speaking: gentle idle sway
-      const idleRotY = Math.sin(t * 0.3 + i * 0.8) * 0.05;
-      const idleRotX = Math.sin(t * 0.4 + i * 1.2) * 0.02;
-      group.rotation.y = lerp(group.rotation.y, idleRotY, 0.04);
-      group.rotation.x = lerp(group.rotation.x, idleRotX, 0.04);
-      faceLights[i].intensity = lerp(faceLights[i].intensity, 0.5, 0.03);
+    group.add(clone);
+
+    // Hit target for raycasting
+    const hitGeo = new THREE.SphereGeometry(1.2, 16, 16);
+    const hitMat = new THREE.MeshBasicMaterial({{ visible: false }});
+    const hitMesh = new THREE.Mesh(hitGeo, hitMat);
+    hitMesh.userData = {{ dim: data.dim, index }};
+    group.add(hitMesh);
+    hoverTargets.push(hitMesh);
+
+    // Halo light
+    const haloLight = new THREE.PointLight(color, 0.5, 6);
+    haloLight.position.set(x, y, -2.5);
+    scene.add(haloLight);
+    faceLights.push(haloLight);
+
+    // Rim accent light
+    const accent = new THREE.PointLight(color, 0.15, 3);
+    accent.position.set(x, y + 0.6, -1);
+    scene.add(accent);
+
+    scene.add(group);
+    faceGroups.push(group);
+    faceMeshes.push(meshInfo);
+  }});
+
+  // ─── Interaction ───
+  let currentDim = null;
+  let activeIndex = -1;
+
+  function onMouseMove(e) {{
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+    const v = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+    v.unproject(camera);
+    const dir = v.sub(camera.position).normalize();
+    const dist = -camera.position.z / dir.z;
+    mouseWorld.copy(camera.position).add(dir.multiplyScalar(dist));
+
+    camera.position.x = mouse.x * 0.25;
+    camera.position.y = mouse.y * 0.15;
+    camera.lookAt(0, 0, 0);
+  }}
+
+  window.stopAll = function() {{
+    if (currentDim) {{
+      const audio = document.getElementById('audio-' + currentDim);
+      if (audio) {{ audio.pause(); audio.currentTime = 0; }}
+    }}
+    document.getElementById('textPanel').classList.remove('visible');
+    document.getElementById('hint').style.opacity = '1';
+    faceLights.forEach(l => {{ l.intensity = 0.5; }});
+    currentDim = null;
+    activeIndex = -1;
+  }};
+
+  function playFace(data, idx) {{
+    window.stopAll();
+    currentDim = data.dim;
+    activeIndex = idx;
+
+    document.getElementById('panelBadge').style.background = data.color;
+    document.getElementById('panelBadge').textContent = data.label;
+    document.getElementById('panelText').innerHTML = '\\u275D ' + data.text + ' \\u275E';
+    document.getElementById('panelMeta').textContent = 'Voix : ' + data.voice;
+    document.getElementById('textPanel').classList.add('visible');
+    document.getElementById('hint').style.opacity = '0';
+
+    faceLights[idx].intensity = 1.5;
+
+    const audio = document.getElementById('audio-' + data.dim);
+    connectAudio(audio);
+    audio.currentTime = 0;
+    audio.play();
+    audio.onended = () => window.stopAll();
+  }}
+
+  function onClick(e) {{
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObjects(hoverTargets);
+    if (hits.length > 0) {{
+      const dim = hits[0].object.userData.dim;
+      const idx = hits[0].object.userData.index;
+      if (currentDim === dim) window.stopAll();
+      else playFace(FACES[idx], idx);
+    }}
+  }}
+
+  window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('click', onClick);
+  window.addEventListener('resize', () => {{
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }});
+
+  // ─── Animation ───
+  const clock = new THREE.Clock();
+
+  function animate() {{
+    requestAnimationFrame(animate);
+    const t = clock.getElapsedTime();
+
+    let speakerPos = null;
+    if (activeIndex >= 0) {{
+      speakerPos = new THREE.Vector3();
+      faceGroups[activeIndex].getWorldPosition(speakerPos);
     }}
 
-    // ── Blink ~~4s cycle ──
-    const blinkPhase = ((t + i * 1.3) % 4.0) / 4.0;
-    if (blinkPhase > 0.94) {{
-      const blinkAmt = Math.sin((blinkPhase - 0.94) / 0.06 * Math.PI);
-      group.children.forEach(child => {{
-        if (child.geometry && child.geometry.parameters &&
-            child.userData.type !== 'iris' && child.userData.type !== 'pupil' &&
-            child.geometry.type === 'SphereGeometry' &&
-            child.material.color && child.material.color.r > 0.8) {{
-          child.scale.y = 1 - blinkAmt * 0.7;
+    const amplitude = activeIndex >= 0 ? getAmplitude() : 0;
+
+    faceGroups.forEach((group, i) => {{
+      const isActive = i === activeIndex;
+      const info = faceMeshes[i];
+      const baseX = group.userData.baseX;
+      const baseY = group.userData.baseY;
+
+      // ── Breathing ──
+      const breathe = Math.sin(t * 0.8 + i * 0.7) * 0.01;
+      group.scale.setScalar(1 + breathe);
+
+      // ── Float ──
+      group.position.y = baseY + Math.sin(t * 0.5 + i * 1.1) * 0.025;
+
+      // ── Morph target animation ──
+      if (info.head && info.head.morphTargetDictionary) {{
+        const d = info.head.morphTargetDictionary;
+        const inf = info.head.morphTargetInfluences;
+        const rest = info.restingInfluences;
+
+        // Reset to resting pose
+        for (let j = 0; j < inf.length; j++) {{
+          inf[j] = lerp(inf[j], rest[j], 0.08);
         }}
-      }});
-    }}
-  }});
 
-  // Hover glow
-  raycaster.setFromCamera(mouse, camera);
-  const hits = raycaster.intersectObjects(hoverTargets);
-  document.body.style.cursor = hits.length > 0 ? 'pointer' : 'default';
+        // ── Blinking (~4s cycle) ──
+        const blinkPhase = ((t + i * 1.3) % 4.0) / 4.0;
+        if (blinkPhase > 0.94) {{
+          const blinkAmt = Math.sin((blinkPhase - 0.94) / 0.06 * Math.PI);
+          if (d['eyeBlink_L'] !== undefined) inf[d['eyeBlink_L']] = blinkAmt;
+          if (d['eyeBlink_R'] !== undefined) inf[d['eyeBlink_R']] = blinkAmt;
+        }}
 
-  hoverTargets.forEach(target => {{
-    const idx = target.userData.index;
-    const isHovered = hits.length > 0 && hits[0].object.userData.index === idx;
-    const isAct = idx === activeIndex;
-    const goalEmissive = isAct ? 0.15 : (isHovered ? 0.12 : 0.04);
-    target.material.emissiveIntensity = lerp(target.material.emissiveIntensity, goalEmissive, 0.08);
-  }});
+        // ── Eye gaze via morph targets ──
+        let gazeX = 0, gazeY = 0;
+        if (!isActive && speakerPos) {{
+          const dx = speakerPos.x - baseX;
+          const dy = speakerPos.y - baseY;
+          gazeX = Math.max(-1, Math.min(1, dx * 0.15));
+          gazeY = Math.max(-1, Math.min(1, dy * 0.15));
+        }} else {{
+          gazeX = Math.max(-1, Math.min(1, (mouseWorld.x - baseX) * 0.1));
+          gazeY = Math.max(-1, Math.min(1, (mouseWorld.y - baseY) * 0.1));
+        }}
 
-  renderer.render(scene, camera);
-}}
+        if (gazeX > 0) {{
+          if (d['eyeLookOut_L'] !== undefined) inf[d['eyeLookOut_L']] = gazeX * 0.6;
+          if (d['eyeLookIn_R'] !== undefined) inf[d['eyeLookIn_R']] = gazeX * 0.6;
+        }} else {{
+          if (d['eyeLookIn_L'] !== undefined) inf[d['eyeLookIn_L']] = -gazeX * 0.6;
+          if (d['eyeLookOut_R'] !== undefined) inf[d['eyeLookOut_R']] = -gazeX * 0.6;
+        }}
+        if (gazeY > 0) {{
+          if (d['eyeLookUp_L'] !== undefined) inf[d['eyeLookUp_L']] = gazeY * 0.5;
+          if (d['eyeLookUp_R'] !== undefined) inf[d['eyeLookUp_R']] = gazeY * 0.5;
+        }} else {{
+          if (d['eyeLookDown_L'] !== undefined) inf[d['eyeLookDown_L']] = -gazeY * 0.5;
+          if (d['eyeLookDown_R'] !== undefined) inf[d['eyeLookDown_R']] = -gazeY * 0.5;
+        }}
 
-animate();
+        if (isActive) {{
+          // ── Lip sync from audio amplitude ──
+          const a = amplitude;
+          if (d['jawOpen'] !== undefined) inf[d['jawOpen']] = a * 0.6;
+          if (d['mouthOpen'] !== undefined) inf[d['mouthOpen']] = a * 0.4;
+          if (d['mouthFunnel'] !== undefined) inf[d['mouthFunnel']] = a * 0.15 + Math.sin(t * 5) * 0.05;
+          if (d['mouthPucker'] !== undefined) inf[d['mouthPucker']] = Math.sin(t * 7) * a * 0.1;
+          if (d['mouthStretch_L'] !== undefined) inf[d['mouthStretch_L']] = a * 0.1;
+          if (d['mouthStretch_R'] !== undefined) inf[d['mouthStretch_R']] = a * 0.1;
+
+          // Speaking micro-expressions
+          if (d['browInnerUp'] !== undefined) inf[d['browInnerUp']] = rest[d['browInnerUp']] + a * 0.15;
+          if (d['cheekSquint_L'] !== undefined) inf[d['cheekSquint_L']] = a * 0.1;
+          if (d['cheekSquint_R'] !== undefined) inf[d['cheekSquint_R']] = a * 0.1;
+          if (d['noseSneer_L'] !== undefined) inf[d['noseSneer_L']] = a * 0.05;
+          if (d['noseSneer_R'] !== undefined) inf[d['noseSneer_R']] = a * 0.05;
+        }} else {{
+          // Idle micro-expressions
+          const micro = Math.sin(t * 0.4 + i * 2.1) * 0.03;
+          if (d['mouthSmile_L'] !== undefined) inf[d['mouthSmile_L']] += micro;
+          if (d['mouthSmile_R'] !== undefined) inf[d['mouthSmile_R']] += micro;
+        }}
+      }}
+
+      // ── Eye object rotation (if model has eye bones) ──
+      if (info.eyes.length > 0) {{
+        let lookTarget;
+        if (!isActive && speakerPos) {{
+          lookTarget = speakerPos;
+        }} else {{
+          lookTarget = mouseWorld;
+        }}
+        info.eyes.forEach(eye => {{
+          const local = eye.parent.worldToLocal(lookTarget.clone());
+          const maxAngle = 0.25;
+          const targetRotY = Math.max(-maxAngle, Math.min(maxAngle, Math.atan2(local.x, local.z)));
+          const targetRotX = Math.max(-maxAngle, Math.min(maxAngle, -Math.atan2(local.y, local.z)));
+          eye.rotation.y = lerp(eye.rotation.y, targetRotY, 0.06);
+          eye.rotation.x = lerp(eye.rotation.x, targetRotX, 0.06);
+        }});
+      }}
+
+      // ── Head rotation ──
+      if (isActive) {{
+        group.rotation.x = lerp(group.rotation.x, Math.sin(t * 0.7) * 0.04, 0.04);
+        group.rotation.y = lerp(group.rotation.y, Math.sin(t * 0.5) * 0.03, 0.04);
+        faceLights[i].intensity = 1.3 + Math.sin(t * 2) * 0.4;
+      }} else if (speakerPos) {{
+        const dx = speakerPos.x - baseX;
+        const dy = speakerPos.y - baseY;
+        group.rotation.y = lerp(group.rotation.y, Math.atan2(dx, 10) * 0.5, 0.025);
+        group.rotation.x = lerp(group.rotation.x, Math.atan2(-dy, 10) * 0.25, 0.025);
+        faceLights[i].intensity = lerp(faceLights[i].intensity, 0.2, 0.03);
+      }} else {{
+        group.rotation.y = lerp(group.rotation.y, Math.sin(t * 0.3 + i * 0.8) * 0.04, 0.03);
+        group.rotation.x = lerp(group.rotation.x, Math.sin(t * 0.4 + i * 1.2) * 0.02, 0.03);
+        faceLights[i].intensity = lerp(faceLights[i].intensity, 0.5, 0.03);
+      }}
+    }});
+
+    // ── Hover detection ──
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObjects(hoverTargets);
+    document.body.style.cursor = hits.length > 0 ? 'pointer' : 'default';
+
+    hoverTargets.forEach(target => {{
+      const idx = target.userData.index;
+      const isHovered = hits.length > 0 && hits[0].object.userData.index === idx;
+      const isAct = idx === activeIndex;
+      const info = faceMeshes[idx];
+      if (info.head) {{
+        const goal = isAct ? 0.08 : (isHovered ? 0.06 : 0.03);
+        info.head.material.emissiveIntensity = lerp(info.head.material.emissiveIntensity, goal, 0.08);
+      }}
+    }});
+
+    renderer.render(scene, camera);
+  }}
+
+  animate();
+}},
+(progress) => {{
+  if (progress.total) {{
+    const pct = Math.round(progress.loaded / progress.total * 100);
+    loadingDiv.textContent = 'Chargement... ' + pct + '%';
+  }}
+}},
+(error) => {{
+  loadingDiv.textContent = 'Erreur de chargement du modèle 3D';
+  console.error(error);
+}});
 </script>
 </body>
 </html>'''

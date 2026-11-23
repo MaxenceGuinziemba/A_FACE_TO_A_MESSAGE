@@ -82,9 +82,9 @@ Types : `Add`, `Fix`, `Update`, `Refactor`, `Remove`
 
 **NLP** : XLM-RoBERTa, spaCy, lexique FR v2 (~200 patterns)  
 **TTS** : Edge TTS (4 voix), pyspellchecker  
-**3D** : Three.js r128, SVG animé  
+**3D** : Three.js r160 (ES modules), GLTFLoader, FaceCap GLB (52 morph targets ARKit), Web Audio API lip sync, SVG animé  
 **Data** : pandas, numpy, Jupyter  
-**Perspectives** : Bark (TTS GPU), Unity, OpenCV
+**Perspectives** : Bark (TTS GPU), Unity, OpenCV, wawa-lipsync (15 visèmes)
 
 ---
 
