@@ -22,7 +22,7 @@ Chaque témoignage devient un **visage sculptural** qui parle avec sa propre voi
 |-----------|----------------------|
 | **Core NLP & Emotion** | **XLM-RoBERTa** (Hugging Face) : validation multilingue zero-shot<br>**Lexique contextuel français v2** : 8 dimensions (cf au dessus)<br>**spaCy** : tokenisation et lemmatisation |
 | **Text-to-Speech** | **Edge TTS** (Microsoft) : 4 voix adultes françaises (Vivienne, Denise, Remy, Henri)<br>**pyspellchecker** : correction orthographique<br>Prosodie SSML : pitch ±10Hz, speed ±15%, volume ±15% |
-| **Avatar & Visuel** | **Three.js r160** (ES modules) : rendu 3D temps réel (WebGL)<br>**GLTFLoader** + modèle **FaceCap** (52 ARKit morph targets)<br>**Web Audio API** : lip sync amplitude en temps réel<br>**SVG animé** : version 2D légère (MVP) |
+| **Avatar & Visuel** | **Three.js r128** (script tags, compatible file://) : rendu 3D temps réel (WebGL)<br>**GLTFLoader** + modèle **FaceCap** (52 ARKit morph targets)<br>**Web Audio API** : lip sync amplitude en temps réel<br>**SVG animé** : version 2D légère (MVP) |
 | **Data & Infra** | **pandas, numpy** : traitement du corpus de 8 707 messages<br>**Jupyter** : notebooks interactifs |
 | **Perspectives** | **Bark (Suno AI)** : synthèse vocale ultra-expressive (nécessite un GPU)<br>**Unity / Blender** : création d'avatars 3D photoréalistes pour l'installation finale<br>**OpenCV / MediaPipe** : détection de la présence des visiteurs |
 
@@ -148,8 +148,8 @@ Chaque témoignage devient un **visage sculptural** qui parle avec sa propre voi
 ✅ **Migration vers modèle GLB réaliste** :
 - Remplacement de TOUTE la géométrie procédurale par le modèle **FaceCap** (Three.js, 325 KB)
 - **52 morph targets ARKit** : expressions faciales complètes (sourcils, bouche, yeux, joues, nez)
-- Three.js upgradé de **r128 → r160** avec ES modules + importmap
-- GLTFLoader pour chargement asynchrone du modèle depuis CDN
+- Three.js **r128** avec `<script>` tags classiques (compatible file://)
+- GLTFLoader + `parse()` sur modèle base64-encodé (aucun serveur nécessaire)
 - 8 clones du modèle, différenciés par couleur émissive + expression de repos
 
 ✨ **Lip sync audio** :
